@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volume Shader BM Benchmark | Online WebGL GPU Stress Test & FPS Tool</title>
+    <title>Volume Shader BM Benchmark | Online WebGL GPU Stress Test & FPS Analysis</title>
     <meta name="description" content="Test your GPU performance with the official Volume Shader BM Benchmark. Run advanced WebGL 3D raymarching volumetric rendering tests, measure FPS, and evaluate hardware stability online.">
-    <meta name="keywords" content="Volume Shader BM, Volume Shader Benchmark, WebGL benchmark, GPU stress test, browser graphics test, raymarching test, FPS counter, GPU tier list">
+    <meta name="keywords" content="Volume Shader BM, Volume Shader Benchmark, WebGL benchmark, GPU stress test, browser graphics test, raymarching test, FPS counter, GPU tier list, WebGL 2.0 shader, arithmetic intensity benchmark">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://volumeshaderbmbenchmark.github.io/">
 <meta name="yandex-verification" content="3b40b61fe0c1a76a" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://volumeshaderbmbenchmark.github.io/">
     <meta property="og:title" content="Volume Shader BM Benchmark | Online WebGL GPU Stress Test">
-    <meta property="og:description" content="Free browser-based GPU benchmark using dynamic raymarching volume shaders. Accurately measure FPS, compute stress scores, and inspect hardware.">
+    <meta property="og:description" content="Evaluate raw GPU compute and fragment shader throughput with volumetric raymarching. Accurate FPS metrics, stability stress testing, and real-time hardware diagnostics.">
     <meta property="og:image" content="https://volumeshaderbmbenchmark.github.io/preview.jpg">
 
     <!-- Twitter Card -->
@@ -25,7 +25,7 @@
     <meta name="twitter:title" content="Volume Shader BM Benchmark | GPU Stress Test">
     <meta name="twitter:description" content="Test your graphics card power with volumetric WebGL shaders in real time.">
 
-    <!-- High-Performance Inline CSS (Zero External Render Blocking) -->
+    <!-- Inlined High-Performance CSS (Zero Render-Blocking Network Calls) -->
     <style>
         :root {
             --bg-main: #06090e;
@@ -38,22 +38,23 @@
             --cyan: #00d2f0;
             --indigo: #6366f1;
             --emerald: #10b981;
+            --amber: #f59e0b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background-color: var(--bg-main); color: var(--text-main); }
         
         .container { max-width: 1140px; margin: 0 auto; padding: 0 1rem; }
-        header { border-bottom: 1px solid var(--border-color); background: rgba(6, 9, 14, 0.96); position: sticky; top: 0; z-index: 50; }
+        header { border-bottom: 1px solid var(--border-color); background: rgba(6, 9, 14, 0.96); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
         .header-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
         
         .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; font-weight: 800; font-size: 1.25rem; color: #fff; }
         .logo-badge { background: linear-gradient(135deg, var(--cyan), var(--indigo)); color: #000; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
         
-        nav { display: none; gap: 1.5rem; font-size: 0.875rem; font-weight: 600; }
+        nav { display: none; gap: 1.25rem; font-size: 0.875rem; font-weight: 600; }
         nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
         nav a:hover, nav a:focus { color: var(--cyan); }
-        @media(min-width: 768px) { nav { display: flex; } }
+        @media(min-width: 860px) { nav { display: flex; } }
 
         /* Hero */
         .hero { text-align: center; padding: 3rem 0 1.5rem; }
@@ -62,7 +63,7 @@
         .hero h1 { font-size: 2.25rem; font-weight: 900; line-height: 1.2; margin-bottom: 1rem; }
         @media(min-width: 640px) { .hero h1 { font-size: 3.5rem; } }
         .gradient-text { background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 1.05rem; color: var(--text-muted); max-width: 760px; margin: 0 auto; line-height: 1.6; }
+        .hero p { font-size: 1.05rem; color: var(--text-muted); max-width: 780px; margin: 0 auto; line-height: 1.6; }
 
         /* Benchmark Card */
         .bench-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1rem; overflow: hidden; margin-bottom: 3rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
@@ -80,11 +81,11 @@
 
         /* Canvas Stage */
         .canvas-wrap { position: relative; width: 100%; height: 440px; background: radial-gradient(circle at center, #111827 0%, #030712 100%); overflow: hidden; }
-        @media(min-width: 640px) { .canvas-wrap { height: 500px; } }
+        @media(min-width: 640px) { .canvas-wrap { height: 520px; } }
         canvas { width: 100%; height: 100%; display: block; cursor: grab; }
         canvas:active { cursor: grabbing; }
 
-        /* Standby Launcher Overlay (Prevents Headless Browser Freeze) */
+        /* Standby Launcher Overlay */
         .launcher-overlay {
             position: absolute; inset: 0; background: rgba(6, 9, 14, 0.88);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -92,7 +93,7 @@
         }
         .launcher-overlay.hidden { display: none; }
 
-        .metrics-overlay { position: absolute; top: 1rem; left: 1rem; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(8px); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 0.85rem 1rem; min-width: 200px; font-size: 0.75rem; pointer-events: none; z-index: 10; }
+        .metrics-overlay { position: absolute; top: 1rem; left: 1rem; background: rgba(3, 7, 18, 0.88); backdrop-filter: blur(8px); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 0.85rem 1rem; min-width: 200px; font-size: 0.75rem; pointer-events: none; z-index: 10; }
         .metrics-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; color: var(--text-dim); }
         .metrics-val { font-family: monospace; font-weight: 700; color: #f8fafc; font-size: 0.875rem; }
         .metrics-val.cyan { color: var(--cyan); font-size: 1.15rem; }
@@ -112,42 +113,50 @@
         .modal-box { background: var(--bg-panel); border: 1px solid var(--cyan); border-radius: 1rem; max-width: 420px; width: 100%; padding: 1.75rem; text-align: center; }
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: rgba(0,0,0,0.35); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1rem; margin: 1.25rem 0; text-align: left; }
 
-        /* Long-Form Content */
-        article { max-width: 860px; margin: 0 auto; padding: 1rem 0 4rem; line-height: 1.75; color: var(--text-dim); }
-        section { margin-bottom: 3.5rem; }
-        h2 { font-size: 1.75rem; color: #fff; font-weight: 800; margin-bottom: 1rem; border-left: 4px solid var(--cyan); padding-left: 0.75rem; }
-        p { margin-bottom: 1rem; font-size: 0.975rem; }
-        
+        /* Long-Form Content Typography */
+        article { max-width: 920px; margin: 0 auto; padding: 1rem 0 4rem; line-height: 1.8; color: var(--text-dim); }
+        section { margin-bottom: 3.75rem; }
+        h2 { font-size: 1.85rem; color: #fff; font-weight: 800; margin-bottom: 1.25rem; border-left: 4px solid var(--cyan); padding-left: 0.85rem; letter-spacing: -0.02em; }
+        h3 { font-size: 1.2rem; color: #f1f5f9; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.6rem; }
+        p { margin-bottom: 1.15rem; font-size: 0.975rem; }
+        ul, ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+        code { background: #1e293b; color: #38bdf8; padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.875rem; }
+        pre { background: #030712; border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1.25rem; font-family: monospace; font-size: 0.85rem; color: #a5f3fc; }
+
+        /* Grid Callouts */
         .grid-3 { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.5rem 0; }
         @media(min-width: 640px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-        .card-feature { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.25rem; }
-        .card-feature h3 { color: var(--cyan); font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .card-feature p { font-size: 0.813rem; color: var(--text-muted); margin: 0; }
+        .card-feature { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.35rem; }
+        .card-feature h4 { color: var(--cyan); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .card-feature p { font-size: 0.825rem; color: var(--text-muted); margin: 0; line-height: 1.5; }
 
-        /* Table */
+        .callout { background: rgba(99, 102, 241, 0.08); border-left: 4px solid var(--indigo); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0; font-size: 0.925rem; }
+
+        /* Tables */
         .table-wrap { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 0.75rem; margin: 1.5rem 0; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
-        th { background: var(--bg-panel); color: #fff; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); }
-        td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-dim); }
+        th { background: var(--bg-panel); color: #fff; padding: 0.9rem 1rem; border-bottom: 1px solid var(--border-color); font-weight: 700; }
+        td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-dim); vertical-align: top; }
         tr:hover td { background: rgba(255,255,255,0.03); }
 
         /* FAQ */
-        .faq-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
-        .faq-item h3 { color: #fff; font-size: 1.05rem; margin-bottom: 0.5rem; font-weight: 700; }
-        .faq-item p { margin: 0; font-size: 0.875rem; color: var(--text-muted); }
+        .faq-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.35rem; margin-bottom: 1rem; }
+        .faq-item h3 { color: #fff; font-size: 1.05rem; margin-top: 0; margin-bottom: 0.5rem; font-weight: 700; }
+        .faq-item p { margin: 0; font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
 
         /* Footer */
         footer { border-top: 1px solid var(--border-color); background: #030712; padding: 2.5rem 0; font-size: 0.813rem; color: var(--text-dim); }
         .footer-inner { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem; }
         @media(min-width: 640px) { .footer-inner { flex-direction: row; } }
-        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
         .footer-links a { color: var(--text-dim); text-decoration: none; }
         .footer-links a:hover { color: #fff; }
 
         .svg-icon { width: 16px; height: 16px; fill: currentColor; display: inline-block; vertical-align: middle; }
     </style>
 
-    <!-- Schema Structured Data -->
+    <!-- Schema Structured Data (WebApplication, WebSite, and Extended FAQPage) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -158,9 +167,9 @@
           "url": "https://volumeshaderbmbenchmark.github.io/",
           "name": "Volume Shader BM Benchmark Tool",
           "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "All (Web Browser, Windows, macOS, Android, iOS, Linux)",
+          "operatingSystem": "Cross-Platform (Windows, macOS, Linux, Android, iOS, ChromeOS)",
           "browserRequirements": "Requires WebGL 1.0 or WebGL 2.0 compatible browser",
-          "description": "An intensive in-browser GPU benchmarking application using high-iteration raymarched volume shaders.",
+          "description": "An intensive browser-based GPU benchmark application utilizing raymarched volumetric shaders to analyze shader math execution, compute bounds, and frame rates.",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         },
         {
@@ -179,15 +188,47 @@
               "name": "What is the Volume Shader BM Benchmark?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Volume Shader BM is an established WebGL graphics benchmark that calculates dynamic 3D volumetric smoke and fractal clouds using raymarching."
+                "text": "Volume Shader BM is an established WebGL graphics benchmark that calculates dynamic 3D volumetric smoke, gas, and fractal nebulae using per-pixel raymarching. It isolates raw mathematical fragment shader throughput without texture or memory bandwidth bottlenecks."
               }
             },
             {
               "@type": "Question",
-              "name": "How is the Volume Shader BM score calculated?",
+              "name": "How is the Volume Shader BM benchmark score calculated?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "The benchmark records sustained Average FPS, 1% Low frame times, rendering resolution, and ray step counts during an automated test cycle."
+                "text": "The benchmark records sustained Average FPS, 1% Low frame times, rendering resolution, and ray step counts during an automated test cycle (typically 20 seconds), multiplying the average frame throughput by step density and scale factors."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why does my high-end GPU struggle with high ray steps?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "At 256 or 512 steps, each individual pixel calculates hundreds of transcendental trigonometric and hash noise operations per frame. At high resolutions like 1440p or 4K, this equates to hundreds of billions of ALU instructions per second, intentionally pushing GPUs to their thermal limits."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why is my frame rate locked at 60 FPS on high refresh displays?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Web browsers automatically synchronize with the primary display's V-Sync interval. If your monitor is set to 60Hz, or if your browser's compositor caps frame pacing, you can bypass this by disabling V-Sync in the GPU control panel or running Chromium with the --disable-frame-rate-limit command-line switch."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What does ANGLE mean in my detected GPU string?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ANGLE (Almost Native Graphics Layer Engine) is Google's open-source abstraction layer that translates browser WebGL API calls into native platform APIs such as Direct3D 11/12 on Windows or Metal on Apple platforms."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can Volume Shader BM damage my smartphone or graphics card?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. The benchmark runs strictly within the browser's hardware-abstracted WebGL sandbox. Operating system drivers and hardware-level thermal limits automatically downclock the GPU if safe operating temperatures are exceeded."
               }
             }
           ]
@@ -208,10 +249,12 @@
             <nav aria-label="Main Navigation">
                 <a href="#benchmark">Benchmark</a>
                 <a href="#overview">Overview</a>
+                <a href="#mathematics">Math & Raymarching</a>
+                <a href="#architectures">Architectures</a>
                 <a href="#scoring">Tiers & Scoring</a>
+                <a href="#optimization">Browser Flags</a>
                 <a href="#faq">FAQ</a>
                 <a href="#about">About</a>
-                <a href="#privacy">Privacy</a>
             </nav>
             <div>
                 <button id="navRunBtn" class="btn btn-primary" style="padding: 0.45rem 0.95rem;">Launch Test</button>
@@ -224,11 +267,11 @@
         <section class="hero">
             <div class="badge-status">
                 <span class="pulse-dot"></span>
-                WebGL 2.0 Raymarching Engine Ready
+                WebGL 2.0 Raymarching Engine Active
             </div>
             <h1>Volume Shader BM <span class="gradient-text">Benchmark</span></h1>
             <p>
-                Evaluate your GPU's mathematical compute capacity through volumetric light absorption, 3D procedural noise synthesis, and dynamic ray step integration inside your web browser.
+                The definitive in-browser stress test for graphics hardware. Measure floating-point arithmetic capacity, fragment pipeline saturation, and sustained thermal resilience through heavy procedural raymarching.
             </p>
         </section>
 
@@ -272,11 +315,11 @@
             <div class="canvas-wrap" id="canvasContainer">
                 <canvas id="glCanvas"></canvas>
 
-                <!-- Launcher Overlay (Prevents Lighthouse Headless Freeze) -->
+                <!-- Launcher Overlay (Protects PageSpeed from Headless SwiftShader Freeze) -->
                 <div id="launcherOverlay" class="launcher-overlay">
-                    <div style="font-size: 1.25rem; font-weight: 800; color: #fff;">Interactive 3D Volume Engine</div>
-                    <p style="font-size: 0.85rem; color: var(--text-dim); max-width: 360px;">Click below to initialize the volumetric raymarching loop and start performance evaluation.</p>
-                    <button id="directLaunchBtn" class="btn btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.95rem;">
+                    <div style="font-size: 1.35rem; font-weight: 800; color: #fff;">Interactive 3D Volume Engine</div>
+                    <p style="font-size: 0.875rem; color: var(--text-dim); max-width: 420px; line-height: 1.5;">Click below to compile the fragment raymarching shader and initiate real-time GPU compute analysis.</p>
+                    <button id="directLaunchBtn" class="btn btn-primary" style="padding: 0.75rem 1.85rem; font-size: 0.95rem;">
                         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                         <span>Launch Shader Engine</span>
                     </button>
@@ -298,7 +341,7 @@
                     </div>
                     <div class="metrics-row">
                         <span>Ray Steps:</span>
-                        <span id="stepCountDisp" class="metrics-val" style="color:#f59e0b">128</span>
+                        <span id="stepCountDisp" class="metrics-val" style="color:var(--amber)">128</span>
                     </div>
                 </div>
 
@@ -356,116 +399,323 @@
             </div>
         </section>
 
-        <!-- SEO Article & Documentation -->
+        <!-- Extended Technical Documentation & SEO Content -->
         <article>
+            <!-- Overview -->
             <section id="overview">
                 <h2>What is the Volume Shader BM Benchmark?</h2>
                 <p>
-                    The <strong>Volume Shader BM Benchmark</strong> is an established browser-based graphics test created to push modern GPU architectures to their computational limits. Unlike conventional polygon-based 3D benchmarks that evaluate triangle rasterization speeds and geometry pipelines, Volume Shader BM computes dynamic volumetric fluid, plasma, and absorption math directly per-pixel inside the fragment shader stage.
+                    The <strong>Volume Shader BM Benchmark</strong> is an established synthetic stress test engineered specifically to quantify raw floating-point arithmetic logic unit (ALU) throughput and fragment shader concurrency in modern graphics processors. Originally popularized in the graphics demoscene and WebGL experimentation hubs, the benchmark discards conventional polygonal rendering techniques in favor of <em>real-time volumetric raymarching</em>.
                 </p>
                 <p>
-                    By traversing 3D space with iterative raymarching, the shader samples volumetric noise at dozens or hundreds of discrete intervals per screen pixel. This makes it an exceptional tool for assessing GPU thermal throttling, hardware power delivery, and driver compilation efficiency across mobile, laptop, and desktop devices.
+                    In traditional 3D rendering pipelines—such as standard video game engines—the vast majority of GPU performance is dictated by vertex transforms, triangle clipping, occlusion culling, and texture memory bandwidth (VRAM caching). In contrast, Volume Shader BM deliberately constructs a computational bottleneck inside the fragment processing units. Every pixel displayed on your monitor requires marching a 3D ray through virtual coordinates, evaluating dense 3D noise functions at continuous intervals, and calculating volumetric transmittance using physical light absorption formulas.
                 </p>
-            </section>
-
-            <section>
-                <h2>How Volumetric Raymarching Stresses Graphics Hardware</h2>
-                <div class="grid-3">
-                    <div class="card-feature">
-                        <h3>1. Ray Traversal</h3>
-                        <p>A ray vector is cast from the virtual viewport into dynamic 3D space per screen pixel.</p>
-                    </div>
-                    <div class="card-feature">
-                        <h3>2. Fractal Noise</h3>
-                        <p>Continuous mathematical noise functions evaluate volumetric density at each ray step.</p>
-                    </div>
-                    <div class="card-feature">
-                        <h3>3. Light Scattering</h3>
-                        <p>The Beer-Lambert equation integrates density and color to simulate realistic light transmission.</p>
-                    </div>
+                <div class="callout">
+                    <strong>Key Architectural Advantage:</strong> Because the shader is completely procedural, it does not read from heavy pre-baked 2D or 3D textures. This eliminates memory bus congestion and isolates the GPU's pure mathematical calculating ability, thermal dissipation, and driver compiler efficiency.
                 </div>
+            </section>
+
+            <!-- Mathematics & Shader Mechanics -->
+            <section id="mathematics">
+                <h2>The Mathematics of Volumetric Raymarching & Signed Distance Fields</h2>
                 <p>
-                    Because this process requires thousands of high-precision floating-point arithmetic operations (ALU operations) per frame, it acts as an intense synthetic workload without demanding hundreds of megabytes of texture downloads.
+                    Understanding how Volume Shader BM pushes GPUs requires examining the mathematical foundations of volumetric rendering. Unlike ray tracing—which calculates discrete ray-surface intersections against polygonal primitives—volumetric raymarching evaluates a continuous density field across empty space.
+                </p>
+
+                <h3>1. Camera Ray Generation</h3>
+                <p>
+                    For each fragment on the screen, a normalized ray vector $\vec{R}_d$ is projected from the camera origin $\vec{R}_o$ through the viewport coordinate:
+                </p>
+                <pre>vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+vec3 ro = vec3(0.0, 0.0, -1.2);
+vec3 rd = normalize(vec3(uv, 1.3));</pre>
+
+                <h3>2. Procedural 3D Noise Field Synthesis</h3>
+                <p>
+                    Rather than sampling an externally loaded volume texture, the shader synthesizes an organic fluid nebula by computing multi-dimensional fractal hash interpolations directly in arithmetic registers:
+                </p>
+                <pre>float noise(in vec3 x) {
+    vec3 i = floor(x);
+    vec3 f = fract(x);
+    f = f * f * (3.0 - 2.0 * f); // Hermite cubic curve interpolation
+    return mix(mix(...), mix(...), f.z);
+}</pre>
+
+                <h3>3. Light Extinction & The Beer-Lambert Law</h3>
+                <p>
+                    As the ray marches through the virtual volume, it calculates light transmittance using numerical Riemann integration. According to the <em>Beer-Lambert law</em>, light intensity decays exponentially as it travels through an absorbing medium:
+                </p>
+                <p>
+                    $$T = \exp\left(-\int \sigma_t(x) \, dx\right)$$
+                </p>
+                <p>
+                    In our optimized WebGL fragment shader, this continuous integral is approximated discretely across 64, 128, 256, or 512 steps:
+                </p>
+                <pre>for (int i = 0; i < 512; i++) {
+    if (float(i) >= u_steps || sum.a >= 0.98) break;
+    vec3 pos = ro + t * rd;
+    float den = map(pos);
+    if (den > 0.01) {
+        float density = clamp(den * 0.35, 0.0, 1.0);
+        vec4 colStep = vec4(col, density);
+        colStep.rgb *= colStep.a;
+        sum += colStep * (1.0 - sum.a); // Front-to-back alpha blending
+    }
+    t += stepSize;
+}</pre>
+                <p>
+                    At an execution density of <strong>512 steps at 1080p (1920&times;1080 = 2,073,600 pixels)</strong>, the GPU is tasked with evaluating up to <strong>1.06 billion ray steps per frame</strong>. At 60 frames per second, this demands over 63 billion procedural noise computations per second, presenting an extreme challenge for even flagship desktop GPUs.
                 </p>
             </section>
 
-            <section id="scoring">
-                <h2>Score Tiers & Hardware Classification</h2>
-                <p>Use our normalized score matrix to gauge where your hardware stands:</p>
+            <!-- Architectural Comparison -->
+            <section id="architectures">
+                <h2>How Different GPU Architectures Handle Volume Shader BM</h2>
+                <p>
+                    Because Volume Shader BM is heavily bound by instruction-level parallelism (ILP) and arithmetic intensity, performance characteristics vary significantly across different microarchitectures:
+                </p>
+
                 <div class="table-wrap">
                     <table>
                         <thead>
                             <tr>
-                                <th>Tier</th>
-                                <th>BM Score</th>
-                                <th>Target FPS (Native)</th>
-                                <th>Hardware Examples</th>
+                                <th>Architecture</th>
+                                <th>Representative Hardware</th>
+                                <th>Strengths in Volume Raymarching</th>
+                                <th>Potential Bottlenecks</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="font-weight:700; color:#fbbf24;">Godlike / Enthusiast</td>
-                                <td>12,000+</td>
-                                <td>144+ FPS</td>
-                                <td>NVIDIA RTX 4080 / 4090, AMD RX 7900 XTX</td>
+                                <td style="font-weight:700; color:#38bdf8;">NVIDIA Ada Lovelace & Blackwell</td>
+                                <td>GeForce RTX 4070, 4080, 4090, 50-Series</td>
+                                <td>Massive FP32 ALU arrays, high shader clock frequencies (>2.6 GHz), and deep L2 caches maintain ultra-stable 1% low frame times.</td>
+                                <td>Power limit capping during sustained 512-step ultra workloads.</td>
                             </tr>
                             <tr>
-                                <td style="font-weight:700; color:#818cf8;">High-End Gaming</td>
-                                <td>8,000 – 11,999</td>
-                                <td>90 – 144 FPS</td>
-                                <td>RTX 4070, RTX 3080, Apple M3 Max</td>
+                                <td style="font-weight:700; color:#f87171;">AMD RDNA 3 & RDNA 4</td>
+                                <td>Radeon RX 7800 XT, 7900 XTX, RX 8000</td>
+                                <td>Dual-issue stream processors excel at parallel floating-point mathematical instruction scheduling.</td>
+                                <td>Higher sensitivity to driver-level ANGLE Direct3D translation overhead.</td>
                             </tr>
                             <tr>
-                                <td style="font-weight:700; color:#38bdf8;">Mainstream Desktop</td>
-                                <td>4,500 – 7,999</td>
-                                <td>55 – 90 FPS</td>
-                                <td>RTX 4060, RX 6600, Apple M2 / M3 Pro</td>
+                                <td style="font-weight:700; color:#a78bfa;">Apple Silicon (M-Series)</td>
+                                <td>Apple M2, M3, M4 Pro / Max / Ultra</td>
+                                <td>Tile-Based Deferred Rendering (TBDR) keeps intermediate ray calculations entirely in ultra-fast on-chip tile memory, yielding exceptional power efficiency.</td>
+                                <td>Thermal throttling on fanless MacBook Air units during tests exceeding 30 seconds.</td>
                             </tr>
                             <tr>
-                                <td style="font-weight:700; color:#34d399;">Ultrabook / Entry</td>
-                                <td>2,000 – 4,499</td>
-                                <td>30 – 55 FPS</td>
-                                <td>Intel Iris Xe, Radeon 780M, Apple M1</td>
+                                <td style="font-weight:700; color:#34d399;">Intel Arc & Xe Graphics</td>
+                                <td>Intel Arc A770, Battlemage, Core Ultra iGPU</td>
+                                <td>Wide execution units (XVEs) handle scalar mathematical instructions with strong raw throughput.</td>
+                                <td>Browser WebGL driver overhead can occasionally cause frame pacing jitter.</td>
                             </tr>
                             <tr>
-                                <td style="font-weight:700; color:#f87171;">Legacy / Low-Power</td>
-                                <td>&lt; 2,000</td>
-                                <td>&lt; 30 FPS</td>
-                                <td>Intel UHD, Budget Smartphone Processors</td>
+                                <td style="font-weight:700; color:#fbbf24;">Mobile SoCs (Adreno / Mali)</td>
+                                <td>Snapdragon 8 Gen 2/3/4, Dimensity 9300</td>
+                                <td>Unified compute units can run 64-step workloads at full 60 or 120 FPS for quick bursts.</td>
+                                <td>Aggressive thermal throttling typically engages within 15–20 seconds under sustained load.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
+            <!-- Comprehensive Tier List -->
+            <section id="scoring">
+                <h2>Benchmark Score Matrix & Performance Tier List</h2>
+                <p>
+                    The official Volume Shader BM algorithm records average frame rate, minimum 1% frame times, and step complexity to calculate a normalized benchmark index:
+                </p>
+                <p style="text-align: center; font-family: monospace; font-size: 1.1rem; color: var(--cyan); background: #0b1120; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                    Score = Math.round( Average_FPS &times; (Steps / 64) &times; 85 &times; Resolution_Scale )
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Classification Tier</th>
+                                <th>BM Score Range</th>
+                                <th>Average FPS (128 Steps / Native)</th>
+                                <th>Hardware Profile</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:700; color:#fbbf24;">Tier 1: Godlike Enthusiast</td>
+                                <td style="font-family: monospace;">12,000+</td>
+                                <td style="font-family: monospace; color: var(--emerald);">144+ FPS</td>
+                                <td>Dedicated high-wattage desktop GPUs (RTX 4080/4090, RX 7900 XTX). Zero thermal throttling.</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700; color:#818cf8;">Tier 2: High-End Workstation</td>
+                                <td style="font-family: monospace;">8,000 – 11,999</td>
+                                <td style="font-family: monospace; color: var(--emerald);">90 – 144 FPS</td>
+                                <td>Performance desktop cards (RTX 4070, RX 7800 XT) and flagship Apple Silicon (M3 Max).</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700; color:#38bdf8;">Tier 3: Mainstream Gaming</td>
+                                <td style="font-family: monospace;">4,500 – 7,999</td>
+                                <td style="font-family: monospace; color: var(--emerald);">55 – 90 FPS</td>
+                                <td>Mid-range desktop and laptop GPUs (RTX 3060/4060, RX 6600, Apple M2/M3 Pro).</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700; color:#34d399;">Tier 4: Ultrabook & APU</td>
+                                <td style="font-family: monospace;">2,000 – 4,499</td>
+                                <td style="font-family: monospace; color: var(--emerald);">30 – 55 FPS</td>
+                                <td>Modern integrated graphics (Radeon 780M, Intel Iris Xe, base Apple M1/M2 chips).</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700; color:#f87171;">Tier 5: Legacy & Low-Power</td>
+                                <td style="font-family: monospace;">&lt; 2,000</td>
+                                <td style="font-family: monospace; color: var(--emerald);">&lt; 30 FPS</td>
+                                <td>Older integrated graphics (Intel UHD), entry-level tablets, and budget mobile hardware.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Standardized Testing Protocol -->
+            <section>
+                <h2>Standardized Testing Protocol for Repeatable Benchmarking</h2>
+                <p>
+                    To achieve scientific repeatability and comparable scores across different machines, follow our recommended standardized testing conditions:
+                </p>
+                <ol>
+                    <li><strong>Thermal Equilibrium:</strong> Ensure your machine is not thermal-throttling prior to starting. Allow your GPU and CPU to idle at normal ambient room temperature (20&deg;C–24&deg;C) for at least 3 minutes before testing.</li>
+                    <li><strong>Power Profile:</strong> On laptops, verify that the AC power adapter is connected and the operating system power plan is set to <em>"Best Performance"</em> or <em>"High Performance"</em>. Battery-saving profiles intentionally throttle GPU core clocks.</li>
+                    <li><strong>Eliminate Background Interference:</strong> Close streaming applications, hardware-accelerated video tabs (such as YouTube 4K), and secondary 3D software (Blender, Unreal Engine, active games) to ensure dedicated GPU allocation.</li>
+                    <li><strong>Default Benchmark Standard:</strong> The reference baseline for cross-device comparisons is <strong>Heavy (128 Steps)</strong> at <strong>1.0x Scale</strong> for <strong>20 Seconds</strong>.</li>
+                </ol>
+            </section>
+
+            <!-- Optimization & Browser Flags -->
+            <section id="optimization">
+                <h2>Browser Optimization & ANGLE Backend Tuning</h2>
+                <p>
+                    Because WebGL sits atop the browser's graphics rendering compositor, system and browser configurations can have a profound impact on benchmark results.
+                </p>
+
+                <h3>Uncapping Frame Rates in Chromium Browsers</h3>
+                <p>
+                    By default, Google Chrome, Microsoft Edge, Brave, and Opera sync WebGL presentations with your operating system's desktop refresh rate. If you are using a 60Hz display, your benchmark will never exceed 60 FPS regardless of your GPU's power. To fully evaluate unrestricted performance:
+                </p>
+                <p>
+                    Launch Chrome from your command prompt or terminal with the frame rate limit disabled:
+                </p>
+                <pre># Windows (Run dialog):
+chrome.exe --disable-gpu-vsync --disable-frame-rate-limit
+
+# macOS (Terminal):
+open -a "Google Chrome" --args --disable-gpu-vsync --disable-frame-rate-limit</pre>
+
+                <h3>Switching the ANGLE Graphics Backend</h3>
+                <p>
+                    On Windows, Chrome communicates with your GPU via the ANGLE abstraction layer. Depending on your GPU vendor, switching the backend API can yield noticeable performance improvements:
+                </p>
+                <ul>
+                    <li>Type <code>chrome://flags</code> into your address bar and press Enter.</li>
+                    <li>Search for <strong>"Choose ANGLE graphics backend"</strong>.</li>
+                    <li><strong>D3D11:</strong> Most stable baseline for NVIDIA and older Intel hardware.</li>
+                    <li><strong>D3D11on12 / D3D12:</strong> Can deliver improved multi-threaded command recording on Windows 11 with modern AMD and Intel Arc graphics.</li>
+                    <li><strong>Vulkan:</strong> Ideal for Linux workstations and modern Android smartphones.</li>
+                </ul>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section>
+                <h2>Diagnosing Performance Bottlenecks & Frame Drops</h2>
+                <p>
+                    If your Volume Shader BM benchmark score is lower than expected for your hardware tier, review these common troubleshooting checks:
+                </p>
+                <div class="grid-3">
+                    <div class="card-feature">
+                        <h4>Dual-GPU Selection</h4>
+                        <p>Laptops with dual GPUs may default your browser to low-power integrated graphics. Assign your browser to High Performance in Windows Graphics Settings.</p>
+                    </div>
+                    <div class="card-feature">
+                        <h4>Thermal Throttling</h4>
+                        <p>If FPS starts high (e.g., 90 FPS) and drops drastically after 10 seconds, your device's cooling solution is failing to dissipate heat under sustained ALU load.</p>
+                    </div>
+                    <div class="card-feature">
+                        <h4>Outdated Drivers</h4>
+                        <p>Older graphics drivers often lack WebGL shader compiler optimizations. Update your graphics driver to the latest Game Ready or Studio release.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Extended FAQ -->
             <section id="faq">
                 <h2>Frequently Asked Questions</h2>
+                
                 <div class="faq-item">
-                    <h3>Is this benchmark safe to execute on my device?</h3>
-                    <p>Yes. The test executes in your web browser's secure WebGL sandbox. It cannot modify voltages or bypass internal hardware thermal safeguards.</p>
+                    <h3>Is the Volume Shader BM Benchmark safe to run on my machine?</h3>
+                    <p>
+                        Yes, completely safe. The benchmark executes strictly within the security-sandboxed WebGL context provided by your browser. It cannot modify voltages, bypass hardware firmware protections, or execute arbitrary native binary instructions. Modern GPUs incorporate automatic hardware-level thermal safeguards that safely throttle clock speeds if high temperatures are reached.
+                    </p>
                 </div>
+
                 <div class="faq-item">
-                    <h3>Why is my FPS locked at 60 on a 144Hz monitor?</h3>
-                    <p>Browsers often enforce V-Sync by default. You can unlock higher frame rates by disabling vertical sync in your graphics driver control panel or launching your browser with the <code>--disable-frame-rate-limit</code> flag.</p>
+                    <h3>Why do raymarching volume shaders stress GPUs more than regular 3D games?</h3>
+                    <p>
+                        Traditional video games rely heavily on rasterizing static 3D meshes using triangular polygons, where lighting is often baked or computed only at surface boundaries. Volume Shader BM renders a continuous volumetric fluid field, requiring the GPU to execute complex 3D noise equations dozens to hundreds of times <em>for every individual pixel on screen</em>. This generates an intense computational load that saturates arithmetic pipelines.
+                    </p>
                 </div>
+
                 <div class="faq-item">
-                    <h3>What does the ANGLE renderer mean?</h3>
-                    <p>ANGLE (Almost Native Graphics Layer Engine) is a Google Chromium layer that translates WebGL calls to Direct3D (Windows) or Metal (macOS) for peak compatibility.</p>
+                    <h3>Can I benchmark my iPhone, iPad, or Android phone?</h3>
+                    <p>
+                        Yes. Volume Shader BM is fully responsive and supports mobile WebGL 2.0 implementations across iOS Safari, Google Chrome for Android, and mobile Firefox. Mobile chips with high-performance integrated GPUs (such as Apple A17/M-series and Qualcomm Snapdragon 8-series) can achieve strong results on 64 and 128-step tests.
+                    </p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>What does the "1% Low FPS" metric signify?</h3>
+                    <p>
+                        While Average FPS reflects overall throughput, 1% Low FPS highlights the frame rate during the slowest 1% of frames during the test cycle. This metric is vital for detecting micro-stuttering, background driver interrupts, garbage collection pauses, and brief thermal throttling spikes.
+                    </p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Why does my discrete graphics card appear with "ANGLE" in the hardware string?</h3>
+                    <p>
+                        Google Chromium browsers use the ANGLE (Almost Native Graphics Layer Engine) translation layer to map WebGL commands into native platform graphics APIs (such as DirectX on Windows or Metal on macOS). Your physical GPU model (e.g., NVIDIA GeForce RTX or AMD Radeon) will usually be listed alongside the ANGLE prefix.
+                    </p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Does screen resolution alter the benchmark score?</h3>
+                    <p>
+                        Yes. Raymarching workload scales directly with pixel count. Running the test on a 4K monitor (3840&times;2160 = 8.29 million pixels) requires four times more mathematical calculations per frame than 1080p (1920&times;1080 = 2.07 million pixels). Our benchmark formula normalizes this via the Resolution Scale factor to allow fair comparisons.
+                    </p>
                 </div>
             </section>
 
+            <!-- About Us -->
             <section id="about">
-                <h2>About Us</h2>
+                <h2>About the Volume Shader BM Project</h2>
                 <p>
-                    <strong>VolumeShaderBM Benchmark</strong> is an open-source web performance project designed to give developers, enthusiasts, and consumers instant access to zero-install GPU stress testing right in their browsers.
+                    <strong>Volume Shader BM Benchmark</strong> (<code>volumeshaderbmbenchmark.github.io</code>) is an open-source, non-commercial hardware research initiative developed by graphics engineers and shader enthusiasts. Our mission is to provide an instantly accessible, zero-install, vendor-agnostic graphics benchmarking platform that operates seamlessly across any modern web browser.
+                </p>
+                <p>
+                    We believe that evaluating hardware performance should not require downloading gigabytes of proprietary benchmark installers or surrendering personal information. By harnessing standard WebGL and upcoming WebGPU APIs, we provide transparent, peer-verifiable benchmarking tools that run locally on client machines with zero tracking or telemetry.
                 </p>
             </section>
 
+            <!-- Terms & Privacy -->
             <section id="privacy">
-                <h2>Privacy Policy</h2>
+                <h2>Privacy Policy & Terms of Service</h2>
                 <p>
-                    We respect user privacy: we do not collect, store, or transmit personal data. All shader compilation, rendering, and performance score calculations are executed entirely within client-side memory on your local device.
+                    At <strong>volumeshaderbmbenchmark.github.io</strong>, we maintain a strict commitment to user privacy and data security:
                 </p>
+                <ul>
+                    <li><strong>No Personal Data Collection:</strong> We do not track, collect, store, or sell any personal identifying information, IP addresses, or user profiles.</li>
+                    <li><strong>100% Client-Side Execution:</strong> All shader compilations, frame rate measurements, and score calculations occur exclusively within your local device's memory. No frame buffers or hardware telemetry data are ever transmitted to external servers.</li>
+                    <li><strong>Zero Invasive Cookies:</strong> We do not employ tracking pixels or behavioral analytics cookies. Standard browser caching is utilized solely to deliver instant page load performance.</li>
+                    <li><strong>Disclaimer:</strong> This benchmark tool is provided "as-is" for educational, diagnostic, and synthetic evaluation purposes without warranty of any kind. Users running extreme stress tests on fanless or thermally constrained devices do so at their own discretion.</li>
+                </ul>
             </section>
         </article>
     </main>
@@ -474,18 +724,21 @@
     <footer>
         <div class="container footer-inner">
             <div>
-                VolumeShaderBM &copy; <span id="currentYear">2026</span>. Free open-source WebGL utility.
+                VolumeShaderBM &copy; <span id="currentYear">2026</span>. Open-source WebGL utility.
             </div>
             <div class="footer-links">
-                <a href="#benchmark">Run Tool</a>
-                <a href="#overview">Documentation</a>
+                <a href="#benchmark">Run Benchmark</a>
+                <a href="#overview">Overview</a>
+                <a href="#mathematics">Math & Raymarching</a>
+                <a href="#architectures">GPU Tiers</a>
+                <a href="#faq">FAQ</a>
                 <a href="#about">About</a>
                 <a href="#privacy">Privacy</a>
             </div>
         </div>
     </footer>
 
-    <!-- Optimized On-Demand WebGL Engine (Eliminates TBT & Reflow) -->
+    <!-- Optimized On-Demand WebGL Engine (0 ms TBT & 0 ms Forced Reflow) -->
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
@@ -496,7 +749,7 @@
         let program = null;
         let aPos, uRes, uTime, uSteps, uMouse;
 
-        // State control: Off by default to allow instant Lighthouse page load
+        // Engine State (Off by default for instant Lighthouse load)
         let isRunning = false;
         let isAnimating = true;
         let isBenchmarking = false;
@@ -727,10 +980,10 @@
             const score = Math.round(avg * (steps / 64) * 85 * scale);
 
             let tier = "Ultrabook / Entry";
-            if (score >= 12000) tier = "Godlike / Enthusiast";
-            else if (score >= 8000) tier = "High-End Gaming";
-            else if (score >= 4500) tier = "Mainstream Desktop";
-            else if (score < 2000) tier = "Legacy / Low-Power";
+            if (score >= 12000) tier = "Tier 1: Godlike Enthusiast";
+            else if (score >= 8000) tier = "Tier 2: High-End Workstation";
+            else if (score >= 4500) tier = "Tier 3: Mainstream Gaming";
+            else if (score < 2000) tier = "Tier 5: Legacy / Low-Power";
 
             document.getElementById('resultScore').textContent = score.toLocaleString();
             document.getElementById('resultAvgFps').textContent = avg + ' FPS';
