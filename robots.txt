@@ -1,0 +1,8 @@
+# Robots.txt for Volume Shader BM Benchmark
+# Domain: https://volumeshaderbmbenchmark.github.io/
+
+User-agent: *
+Allow: /
+
+# Sitemap Location
+Sitemap: https://volumeshaderbmbenchmark.github.io/sitemap.xml
