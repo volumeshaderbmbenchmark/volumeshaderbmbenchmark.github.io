@@ -85,7 +85,7 @@
         canvas { width: 100%; height: 100%; display: block; cursor: grab; }
         canvas:active { cursor: grabbing; }
 
-        /* Standby Launcher Overlay */
+        /* Standby Launcher Overlay (Protects Headless Browser from Freezing) */
         .launcher-overlay {
             position: absolute; inset: 0; background: rgba(6, 9, 14, 0.88);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -254,7 +254,8 @@
                 <a href="#scoring">Tiers & Scoring</a>
                 <a href="#optimization">Browser Flags</a>
                 <a href="#faq">FAQ</a>
-                <a href="#about">About</a>
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
             </nav>
             <div>
                 <button id="navRunBtn" class="btn btn-primary" style="padding: 0.45rem 0.95rem;">Launch Test</button>
@@ -692,31 +693,6 @@ open -a "Google Chrome" --args --disable-gpu-vsync --disable-frame-rate-limit</p
                     </p>
                 </div>
             </section>
-
-            <!-- About Us -->
-            <section id="about">
-                <h2>About the Volume Shader BM Project</h2>
-                <p>
-                    <strong>Volume Shader BM Benchmark</strong> (<code>volumeshaderbmbenchmark.github.io</code>) is an open-source, non-commercial hardware research initiative developed by graphics engineers and shader enthusiasts. Our mission is to provide an instantly accessible, zero-install, vendor-agnostic graphics benchmarking platform that operates seamlessly across any modern web browser.
-                </p>
-                <p>
-                    We believe that evaluating hardware performance should not require downloading gigabytes of proprietary benchmark installers or surrendering personal information. By harnessing standard WebGL and upcoming WebGPU APIs, we provide transparent, peer-verifiable benchmarking tools that run locally on client machines with zero tracking or telemetry.
-                </p>
-            </section>
-
-            <!-- Terms & Privacy -->
-            <section id="privacy">
-                <h2>Privacy Policy & Terms of Service</h2>
-                <p>
-                    At <strong>volumeshaderbmbenchmark.github.io</strong>, we maintain a strict commitment to user privacy and data security:
-                </p>
-                <ul>
-                    <li><strong>No Personal Data Collection:</strong> We do not track, collect, store, or sell any personal identifying information, IP addresses, or user profiles.</li>
-                    <li><strong>100% Client-Side Execution:</strong> All shader compilations, frame rate measurements, and score calculations occur exclusively within your local device's memory. No frame buffers or hardware telemetry data are ever transmitted to external servers.</li>
-                    <li><strong>Zero Invasive Cookies:</strong> We do not employ tracking pixels or behavioral analytics cookies. Standard browser caching is utilized solely to deliver instant page load performance.</li>
-                    <li><strong>Disclaimer:</strong> This benchmark tool is provided "as-is" for educational, diagnostic, and synthetic evaluation purposes without warranty of any kind. Users running extreme stress tests on fanless or thermally constrained devices do so at their own discretion.</li>
-                </ul>
-            </section>
         </article>
     </main>
 
@@ -732,8 +708,8 @@ open -a "Google Chrome" --args --disable-gpu-vsync --disable-frame-rate-limit</p
                 <a href="#mathematics">Math & Raymarching</a>
                 <a href="#architectures">GPU Tiers</a>
                 <a href="#faq">FAQ</a>
-                <a href="#about">About</a>
-                <a href="#privacy">Privacy</a>
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
             </div>
         </div>
     </footer>
