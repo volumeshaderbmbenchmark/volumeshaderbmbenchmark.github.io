@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Volume Shader BM Benchmark Project</title>
+    <meta name="description" content="Learn about the Volume Shader BM Benchmark project, our mission to deliver transparent, zero-install WebGL GPU compute evaluation, our engineering background, and testing methodology.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://volumeshaderbmbenchmark.github.io/about.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://volumeshaderbmbenchmark.github.io/about.html">
+    <meta property="og:title" content="About Us | Volume Shader BM Benchmark Project">
+    <meta property="og:description" content="Discover the team, engineering philosophy, and open-source mission behind the browser-based Volume Shader BM GPU stress test.">
+
+    <style>
+        :root {
+            --bg-main: #06090e;
+            --bg-card: #0e1422;
+            --bg-panel: #141d30;
+            --border-color: #263552;
+            --text-main: #f8fafc;
+            --text-dim: #cbd5e1;
+            --text-muted: #94a3b8;
+            --cyan: #00d2f0;
+            --indigo: #6366f1;
+            --emerald: #10b981;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-main); color: var(--text-main); }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 1.25rem; }
+        header { border-bottom: 1px solid var(--border-color); background: rgba(6, 9, 14, 0.96); position: sticky; top: 0; z-index: 50; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; font-weight: 800; font-size: 1.25rem; color: #fff; }
+        .logo-badge { background: linear-gradient(135deg, var(--cyan), var(--indigo)); color: #000; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        nav { display: flex; gap: 1.5rem; font-size: 0.875rem; font-weight: 600; }
+        nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+        nav a:hover, nav a.active { color: var(--cyan); }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.813rem; border: none; cursor: pointer; text-decoration: none; background: linear-gradient(135deg, #10b981, #0d9488); color: #fff; }
+        
+        main { padding: 3rem 0 5rem; }
+        h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 1.5rem; }
+        .gradient-text { background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: 1.6rem; color: #fff; font-weight: 800; margin: 2.5rem 0 1rem; border-left: 4px solid var(--cyan); padding-left: 0.75rem; }
+        p { margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.8; color: var(--text-dim); }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin: 2rem 0; }
+        @media(min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.5rem; }
+        .card h3 { color: var(--cyan); font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .card p { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+        
+        footer { border-top: 1px solid var(--border-color); background: #030712; padding: 2.5rem 0; font-size: 0.813rem; color: var(--text-dim); }
+        .footer-inner { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem; }
+        @media(min-width: 640px) { .footer-inner { flex-direction: row; } }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; }
+        .footer-links a:hover { color: #fff; }
+    </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Volume Shader BM Benchmark",
+        "url": "https://volumeshaderbmbenchmark.github.io/",
+        "description": "An open-source graphics research initiative providing in-browser hardware stress testing through volumetric shader computing.",
+        "founder": {
+          "@type": "Person",
+          "name": "Graphics Engineering Community"
+        }
+      }
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-badge">BM</div>
+                <span>VolumeShader<span style="color:var(--cyan)">BM</span></span>
+            </a>
+            <nav>
+                <a href="index.html">Benchmark</a>
+                <a href="about.html" class="active">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </nav>
+            <div>
+                <a href="index.html#benchmark" class="btn">Launch Tool</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>About the <span class="gradient-text">Volume Shader BM</span> Project</h1>
+        <p>
+            Welcome to <strong>Volume Shader BM Benchmark</strong> (<code>volumeshaderbmbenchmark.github.io</code>). We are an independent, open-source initiative founded by web graphics engineers, shader developers, and computer hardware enthusiasts dedicated to democratizing GPU benchmarking.
+        </p>
+        <p>
+            Historically, evaluating a computer’s 3D rendering and floating-point capacity required downloading heavy proprietary software suites spanning several gigabytes. Our mission is to provide an instantaneous, zero-install, platform-agnostic graphics benchmark that operates directly inside any modern standards-compliant web browser.
+        </p>
+
+        <h2>Our Engineering Philosophy</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>1. Pure Arithmetic Intensity</h3>
+                <p>We believe synthetic benchmarks must isolate specific hardware bottlenecks. Volume Shader BM bypasses polygon rasterization and texture caching, directly stressing the GPU fragment ALU pipelines through volumetric raymarching.</p>
+            </div>
+            <div class="card">
+                <h3>2. Radical Transparency</h3>
+                <p>Our shader routines, scoring metrics, and frame pacing formulas are completely open. No hidden bias, no commercial paywalls, and no proprietary wrapper dependencies.</p>
+            </div>
+            <div class="card">
+                <h3>3. Cross-Platform Equality</h3>
+                <p>Whether running on a $2,000 desktop graphics card, a thin-and-light laptop, or an Android smartphone, our WebGL implementation uses identical mathematical algorithms to ensure meaningful cross-device comparisons.</p>
+            </div>
+            <div class="card">
+                <h3>4. Zero Telemetry & Privacy First</h3>
+                <p>We do not collect your personal information or monetize your hardware identifiers. Computations remain 100% confined to your device's client-side memory.</p>
+            </div>
+        </div>
+
+        <h2>Why Volumetric Shaders Matter</h2>
+        <p>
+            Modern graphical computing is evolving rapidly. Real-time atmospheric effects, fluid dynamics, medical volumetric CT imaging, and scientific particle visualization all depend on raymarching and numerical volume integration rather than simple polygonal meshes.
+        </p>
+        <p>
+            By computing multi-octave 3D noise fields and Beer-Lambert extinction integrals for each screen pixel at 60 to 144+ FPS, Volume Shader BM delivers a realistic representation of sustained mathematical and thermal stress on modern silicon architectures.
+        </p>
+
+        <h2>Open-Source Collaboration & Contact</h2>
+        <p>
+            This benchmark is hosted publicly via GitHub Pages. We welcome contributions, bug reports, and suggestions from the worldwide graphics engineering community.
+        </p>
+        <p>
+            If you have questions regarding benchmarking methodology, shader compiler edge cases, or educational inquiries, please open an issue in our official project repository or inspect the public source code directly.
+        </p>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div>VolumeShaderBM &copy; 2026. Open-source WebGL utility.</div>
+            <div class="footer-links">
+                <a href="index.html">Benchmark</a>
+                <a href="about.html">About Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
