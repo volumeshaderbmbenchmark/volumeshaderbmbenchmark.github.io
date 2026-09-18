@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volume Shader BM Benchmark | Online WebGL GPU Stress Test & FPS Tool</title>
     <meta name="description" content="Test your GPU performance with the official Volume Shader BM Benchmark. Run advanced WebGL 3D raymarching volumetric rendering tests, measure FPS, and evaluate hardware stability online.">
-    <meta name="keywords" content="Volume Shader BM, Volume Shader Benchmark, WebGL benchmark, GPU stress test, browser graphics test, raymarching test, FPS counter, GPU tier list, hardware benchmark online">
+    <meta name="keywords" content="Volume Shader BM, Volume Shader Benchmark, WebGL benchmark, GPU stress test, browser graphics test, raymarching test, FPS counter, GPU tier list">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://volumeshaderbmbenchmark.github.io/">
 <meta name="yandex-verification" content="3b40b61fe0c1a76a" />
     <meta name="msvalidate.01" content="E28C016A73E732687A91C5D28EC2252D" />
     <meta name="google-site-verification" content="f9m4iJ4k1kZs6nwr8YaGj3myF-MeWGDVPWbznGxklRI" />
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://volumeshaderbmbenchmark.github.io/">
     <meta property="og:title" content="Volume Shader BM Benchmark | Online WebGL GPU Stress Test">
@@ -23,53 +23,125 @@
     <meta name="twitter:url" content="https://volumeshaderbmbenchmark.github.io/">
     <meta name="twitter:title" content="Volume Shader BM Benchmark | GPU Stress Test">
     <meta name="twitter:description" content="Test your graphics card power with volumetric WebGL shaders in real time.">
-    <meta name="twitter:image" content="https://volumeshaderbmbenchmark.github.io/preview.jpg">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Tailwind Config -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        cyber: {
-                            50: '#f0fdfa',
-                            500: '#14b8a6',
-                            900: '#042f2e',
-                            dark: '#0a0d14',
-                            card: '#121824',
-                            border: '#1f293d',
-                            accent: '#6366f1'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
+    <!-- High Performance Pure Inlined CSS (Zero Render-Blocking Dependencies) -->
     <style>
-        body { background-color: #080b11; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
-        .gradient-text {
-            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        :root {
+            --bg-main: #06090e;
+            --bg-card: #0d131f;
+            --bg-panel: #141c2e;
+            --border-color: #232f48;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #cbd5e1;
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.25);
+            --indigo: #6366f1;
+            --emerald: #10b981;
         }
-        .canvas-container {
-            position: relative;
-            background: radial-gradient(circle at center, #111827 0%, #030712 100%);
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0b0f19; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background-color: var(--bg-main); color: var(--text-main); }
+        
+        /* Layout */
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 1rem; }
+        header { border-bottom: 1px solid var(--border-color); background: rgba(6, 9, 14, 0.95); position: sticky; top: 0; z-index: 50; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; font-weight: 800; font-size: 1.25rem; color: #fff; }
+        .logo-badge { background: linear-gradient(135deg, var(--cyan), var(--indigo)); color: #fff; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        
+        nav { display: none; gap: 1.5rem; font-size: 0.875rem; font-weight: 600; }
+        nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+        nav a:hover, nav a:focus { color: var(--cyan); }
+        @media(min-width: 768px) { nav { display: flex; } }
+
+        /* Hero */
+        .hero { text-align: center; padding: 3rem 0 1.5rem; }
+        .badge-status { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 9999px; background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.4); color: #67e8f9; font-size: 0.75rem; font-weight: 600; margin-bottom: 1.25rem; }
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; display: inline-block; }
+        .hero h1 { font-size: 2.25rem; font-weight: 900; line-height: 1.2; margin-bottom: 1rem; }
+        @media(min-width: 640px) { .hero h1 { font-size: 3.5rem; } }
+        .gradient-text { background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.05rem; color: var(--text-muted); max-width: 760px; margin: 0 auto; line-height: 1.6; }
+
+        /* Benchmark Card */
+        .bench-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1rem; overflow: hidden; margin-bottom: 3rem; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .bench-hud-top { background: var(--bg-panel); border-bottom: 1px solid var(--border-color); padding: 0.85rem 1.25rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+        
+        .controls-group { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; font-size: 0.813rem; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.813rem; border: none; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #0d9488); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
+        .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-secondary { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+        .btn-secondary:hover { background: #334155; }
+
+        .select-label { color: var(--text-dim); font-size: 0.813rem; font-weight: 600; }
+        select { background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 0.5rem; padding: 0.45rem 0.65rem; font-size: 0.813rem; outline: none; }
+        select:focus { border-color: var(--cyan); }
+
+        /* Canvas Stage */
+        .canvas-wrap { position: relative; width: 100%; height: 440px; background: #030712; }
+        @media(min-width: 640px) { .canvas-wrap { height: 500px; } }
+        canvas { width: 100%; height: 100%; display: block; cursor: grab; }
+        canvas:active { cursor: grabbing; }
+
+        .metrics-overlay { position: absolute; top: 1rem; left: 1rem; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(8px); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 0.85rem 1rem; min-width: 200px; font-size: 0.75rem; pointer-events: none; z-index: 10; }
+        .metrics-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; color: var(--text-muted); }
+        .metrics-val { font-family: monospace; font-weight: 700; color: #f8fafc; font-size: 0.875rem; }
+        .metrics-val.cyan { color: #22d3ee; font-size: 1.15rem; }
+
+        /* Hardware Strip */
+        .hw-strip { background: rgba(6, 9, 14, 0.9); border-top: 1px solid var(--border-color); padding: 0.85rem 1.25rem; display: grid; grid-template-columns: 1fr; gap: 0.75rem; font-size: 0.75rem; }
+        @media(min-width: 640px) { .hw-strip { grid-template-columns: repeat(3, 1fr); } }
+        .hw-title { color: var(--text-muted); display: block; margin-bottom: 0.2rem; font-weight: 500; }
+        .hw-desc { font-weight: 700; color: var(--text-main); font-family: monospace; }
+
+        /* Progress Bar */
+        .progress-line { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: #1e293b; display: none; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--indigo)); width: 0%; transition: width 0.1s linear; }
+
+        /* Modal */
+        .modal { position: absolute; inset: 0; background: rgba(3, 7, 18, 0.92); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; padding: 1.5rem; z-index: 30; }
+        .modal-box { background: var(--bg-panel); border: 1px solid var(--cyan); border-radius: 1rem; max-width: 420px; width: 100%; padding: 1.75rem; text-align: center; }
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1rem; margin: 1.25rem 0; text-align: left; }
+
+        /* Content Sections */
+        article { max-width: 860px; margin: 0 auto; padding: 1rem 0 4rem; line-height: 1.75; color: var(--text-dim); }
+        section { margin-bottom: 3.5rem; }
+        h2 { font-size: 1.75rem; color: #fff; font-weight: 800; margin-bottom: 1rem; border-left: 4px solid var(--cyan); padding-left: 0.75rem; }
+        p { margin-bottom: 1rem; font-size: 0.975rem; }
+        
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.5rem 0; }
+        @media(min-width: 640px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+        .card-feature { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.25rem; }
+        .card-feature h3 { color: var(--cyan); font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .card-feature p { font-size: 0.813rem; color: var(--text-muted); margin: 0; }
+
+        /* Table */
+        .table-wrap { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 0.75rem; margin: 1.5rem 0; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+        th { background: var(--bg-panel); color: #fff; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); }
+        td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-dim); }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* FAQ */
+        .faq-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
+        .faq-item h3 { color: #fff; font-size: 1.05rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .faq-item p { margin: 0; font-size: 0.875rem; color: var(--text-muted); }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-color); background: #030712; padding: 2.5rem 0; font-size: 0.813rem; color: var(--text-muted); }
+        .footer-inner { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem; }
+        @media(min-width: 640px) { .footer-inner { flex-direction: row; } }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; }
+        .footer-links a:hover { color: #fff; }
+
+        .svg-icon { width: 16px; height: 16px; fill: currentColor; display: inline-block; vertical-align: middle; }
     </style>
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Schema Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -82,24 +154,15 @@
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "All (Web Browser, Windows, macOS, Android, iOS, Linux)",
           "browserRequirements": "Requires WebGL 1.0 or WebGL 2.0 compatible browser",
-          "description": "An intensive in-browser GPU benchmarking application using high-iteration raymarched volume shaders to analyze frame rates, hardware limits, and shader compilation efficiency.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
+          "description": "An intensive in-browser GPU benchmarking application using high-iteration raymarched volume shaders.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         },
         {
           "@type": "WebSite",
           "@id": "https://volumeshaderbmbenchmark.github.io/#website",
           "url": "https://volumeshaderbmbenchmark.github.io/",
           "name": "Volume Shader BM Benchmark",
-          "description": "Official Volume Shader BM performance benchmark for GPUs and mobile processors.",
-          "publisher": {
-            "@type": "Organization",
-            "name": "VolumeShaderBM Team",
-            "url": "https://volumeshaderbmbenchmark.github.io/"
-          }
+          "publisher": { "@type": "Organization", "name": "VolumeShaderBM Team", "url": "https://volumeshaderbmbenchmark.github.io/" }
         },
         {
           "@type": "FAQPage",
@@ -110,7 +173,7 @@
               "name": "What is the Volume Shader BM Benchmark?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Volume Shader BM is an established WebGL graphics benchmark that calculates dynamic 3D volumetric smoke and fractal clouds using raymarching. It forces the GPU fragment pipeline to compute dense mathematical integrals per pixel, providing an accurate metric of raw GPU shader power."
+                "text": "Volume Shader BM is an established WebGL graphics benchmark that calculates dynamic 3D volumetric smoke and fractal clouds using raymarching."
               }
             },
             {
@@ -118,15 +181,7 @@
               "name": "How is the Volume Shader BM score calculated?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "The benchmark records sustained Average FPS, 1% Low frame times, rendering resolution, and ray step counts during an automated test cycle (typically 15 to 30 seconds), generating an overall normalized index score."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why is my FPS capped at 60 on a 144Hz monitor?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Most modern browsers apply V-Sync by default to save energy. To unlock higher frame rates, turn off vertical synchronization in your GPU driver control panel (NVIDIA Control Panel or AMD Software) or pass the '--disable-frame-rate-limit' flag to Chromium-based browsers."
+                "text": "The benchmark records sustained Average FPS, 1% Low frame times, rendering resolution, and ray step counts during an automated test cycle."
               }
             }
           ]
@@ -135,390 +190,304 @@
     }
     </script>
 </head>
-<body class="antialiased selection:bg-indigo-500 selection:text-white">
+<body>
 
-    <!-- Navigation -->
-    <header class="border-b border-cyber-border/70 sticky top-0 z-50 backdrop-blur-md bg-cyber-dark/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-cyan-500/20">
-                    BM
-                </div>
-                <span class="text-xl font-bold tracking-tight text-white">
-                    VolumeShader<span class="text-cyan-400">BM</span>
-                </span>
-            </div>
-            <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-300">
-                <a href="#benchmark" class="hover:text-cyan-400 transition-colors">Benchmark Tool</a>
-                <a href="#overview" class="hover:text-cyan-400 transition-colors">What is Volume Shader?</a>
-                <a href="#scoring" class="hover:text-cyan-400 transition-colors">Tiers & Scoring</a>
-                <a href="#faq" class="hover:text-cyan-400 transition-colors">FAQ</a>
-                <a href="#about" class="hover:text-cyan-400 transition-colors">About Us</a>
-                <a href="#privacy" class="hover:text-cyan-400 transition-colors">Privacy</a>
+    <!-- Top Navigation -->
+    <header>
+        <div class="container header-inner">
+            <a href="https://volumeshaderbmbenchmark.github.io/" class="logo">
+                <div class="logo-badge">BM</div>
+                <span>VolumeShader<span style="color:var(--cyan)">BM</span></span>
+            </a>
+            <nav aria-label="Main Navigation">
+                <a href="#benchmark">Benchmark</a>
+                <a href="#overview">Overview</a>
+                <a href="#scoring">Tiers & Scoring</a>
+                <a href="#faq">FAQ</a>
+                <a href="#about">About</a>
+                <a href="#privacy">Privacy</a>
             </nav>
-            <div class="flex items-center space-x-3">
-                <a href="#benchmark" class="px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md hover:brightness-110 transition-all">
-                    Run Benchmark
-                </a>
+            <div>
+                <a href="#benchmark" class="btn btn-primary" style="padding: 0.45rem 0.95rem;">Run Test</a>
             </div>
         </div>
     </header>
 
-    <main>
+    <main class="container">
         <!-- Hero Section -->
-        <section class="relative pt-12 pb-8 overflow-hidden">
-            <div class="max-w-5xl mx-auto px-4 text-center">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800 text-cyan-300 text-xs font-medium mb-5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    WebGL 2.0 Real-Time Raymarching Engine Active
-                </div>
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-4 leading-tight">
-                    Volume Shader BM <span class="gradient-text">Benchmark</span>
-                </h1>
-                <p class="text-lg text-slate-400 max-w-3xl mx-auto mb-8 leading-relaxed">
-                    Test the raw mathematical computing capacity of your GPU through volumetric light absorption, 3D noise synthesis, and dynamic ray step integration right inside your browser.
-                </p>
+        <section class="hero">
+            <div class="badge-status">
+                <span class="pulse-dot"></span>
+                WebGL 2.0 Raymarching Engine Ready
             </div>
+            <h1>Volume Shader BM <span class="gradient-text">Benchmark</span></h1>
+            <p>
+                Evaluate your GPU's mathematical compute limit through volumetric light absorption, 3D procedural noise synthesis, and dynamic ray step integration inside your web browser.
+            </p>
         </section>
 
-        <!-- Benchmark Canvas & Live Controls Section -->
-        <section id="benchmark" class="max-w-6xl mx-auto px-4 pb-16">
-            <div class="bg-cyber-card border border-cyber-border rounded-2xl overflow-hidden shadow-2xl shadow-indigo-950/30">
-                <!-- Top Control HUD -->
-                <div class="bg-slate-900/90 border-b border-cyber-border px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-                    <div class="flex items-center space-x-4">
-                        <button id="startBenchmarkBtn" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg hover:shadow-emerald-500/20 active:scale-95 transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-play"></i>
-                            <span>Start 20s Benchmark</span>
-                        </button>
-                        <button id="pauseShaderBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors flex items-center gap-2">
-                            <i class="fa-solid fa-pause"></i>
-                            <span>Pause</span>
-                        </button>
+        <!-- Benchmark Canvas & Live Controls -->
+        <section id="benchmark" class="bench-card">
+            <div class="bench-hud-top">
+                <div style="display: flex; gap: 0.5rem;">
+                    <button id="startBenchmarkBtn" class="btn btn-primary" aria-label="Start Benchmark">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <span>Start 20s Benchmark</span>
+                    </button>
+                    <button id="toggleAnimBtn" class="btn btn-secondary" aria-label="Toggle Animation">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <span id="animBtnText">Pause</span>
+                    </button>
+                </div>
+
+                <div class="controls-group">
+                    <label for="qualityPreset" class="select-label">Quality:</label>
+                    <select id="qualityPreset" aria-label="Quality Preset">
+                        <option value="64">Standard (64 Steps)</option>
+                        <option value="128" selected>Heavy (128 Steps)</option>
+                        <option value="256">Extreme (256 Steps)</option>
+                        <option value="512">Ultra (512 Steps)</option>
+                    </select>
+
+                    <label for="resolutionScale" class="select-label">Scale:</label>
+                    <select id="resolutionScale" aria-label="Resolution Scale">
+                        <option value="0.5">0.5x (Speed)</option>
+                        <option value="1.0" selected>1.0x (Native)</option>
+                        <option value="1.5">1.5x (SuperSampling)</option>
+                    </select>
+
+                    <button id="fullscreenBtn" class="btn btn-secondary" style="padding: 0.45rem 0.65rem;" title="Fullscreen" aria-label="Toggle Fullscreen">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Canvas Viewport -->
+            <div class="canvas-wrap">
+                <canvas id="glCanvas"></canvas>
+
+                <!-- Metrics Overlay -->
+                <div class="metrics-overlay">
+                    <div class="metrics-row">
+                        <span>Current FPS:</span>
+                        <span id="currentFps" class="metrics-val cyan">60</span>
                     </div>
-
-                    <!-- Preset and Stress Controls -->
-                    <div class="flex items-center flex-wrap gap-3 text-sm">
-                        <label class="text-slate-400 font-medium">Quality / Steps:</label>
-                        <select id="qualityPreset" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-slate-200 text-xs focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                            <option value="64">Standard (64 Steps)</option>
-                            <option value="128" selected>Heavy (128 Steps)</option>
-                            <option value="256">Extreme (256 Steps)</option>
-                            <option value="512">Ultra Stress (512 Steps)</option>
-                        </select>
-
-                        <label class="text-slate-400 font-medium ml-2">Scale:</label>
-                        <select id="resolutionScale" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-slate-200 text-xs focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                            <option value="0.5">0.5x (Speed)</option>
-                            <option value="1.0" selected>1.0x (Native)</option>
-                            <option value="1.5">1.5x (SuperSampling)</option>
-                        </select>
-
-                        <button id="fullscreenBtn" title="Toggle Fullscreen" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 ml-2">
-                            <i class="fa-solid fa-expand"></i>
-                        </button>
+                    <div class="metrics-row">
+                        <span>Frame Time:</span>
+                        <span id="frameTime" class="metrics-val">16.6 ms</span>
+                    </div>
+                    <div class="metrics-row">
+                        <span>Min / Max FPS:</span>
+                        <span id="minMaxFps" class="metrics-val">-- / --</span>
+                    </div>
+                    <div class="metrics-row">
+                        <span>Ray Steps:</span>
+                        <span id="stepCountDisp" class="metrics-val" style="color:#f59e0b">128</span>
                     </div>
                 </div>
 
-                <!-- WebGL Interactive Area -->
-                <div class="relative w-full h-[460px] sm:h-[540px] canvas-container">
-                    <canvas id="glCanvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+                <!-- Progress Line -->
+                <div id="benchmarkProgressContainer" class="progress-line">
+                    <div id="benchmarkProgressBar" class="progress-fill"></div>
+                </div>
 
-                    <!-- Real-Time Metrics Overlay -->
-                    <div class="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-md border border-slate-800 rounded-xl p-4 min-w-[210px] space-y-2 pointer-events-none text-xs">
-                        <div class="flex justify-between items-center text-slate-400">
-                            <span>FPS:</span>
-                            <span id="currentFps" class="font-mono text-lg font-bold text-cyan-400">0</span>
-                        </div>
-                        <div class="flex justify-between items-center text-slate-400">
-                            <span>Frame Time:</span>
-                            <span id="frameTime" class="font-mono text-slate-200">0.0 ms</span>
-                        </div>
-                        <div class="flex justify-between items-center text-slate-400">
-                            <span>Min / Max FPS:</span>
-                            <span id="minMaxFps" class="font-mono text-slate-300">0 / 0</span>
-                        </div>
-                        <div class="flex justify-between items-center text-slate-400">
-                            <span>Current Step Count:</span>
-                            <span id="stepCountDisp" class="font-mono text-amber-400 font-semibold">128</span>
-                        </div>
-                    </div>
+                <!-- Score Modal -->
+                <div id="resultModal" class="modal">
+                    <div class="modal-box">
+                        <h3 style="font-size: 1.5rem; font-weight: 800; color: #fff;">Benchmark Complete</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Official Volume Shader BM Metrics</p>
 
-                    <!-- Progress Indicator Bar during Active Benchmark -->
-                    <div id="benchmarkProgressContainer" class="hidden absolute bottom-0 left-0 right-0 h-2 bg-slate-900 overflow-hidden">
-                        <div id="benchmarkProgressBar" class="h-full bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all duration-100" style="width: 0%;"></div>
-                    </div>
-
-                    <!-- Test Result Modal Overlay -->
-                    <div id="resultModal" class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-lg flex items-center justify-center p-6 z-20">
-                        <div class="bg-cyber-card border border-cyan-500/40 rounded-2xl max-w-md w-full p-6 text-center space-y-5 shadow-2xl">
-                            <div class="w-14 h-14 mx-auto rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl font-bold">
-                                <i class="fa-solid fa-trophy"></i>
+                        <div class="modal-grid">
+                            <div>
+                                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Score</span>
+                                <div id="resultScore" style="font-size: 1.5rem; font-weight: 900; color: var(--cyan);">0</div>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-black text-white">Benchmark Complete</h3>
-                                <p class="text-xs text-slate-400 mt-1">Official Volume Shader BM Metrics</p>
+                                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Average FPS</span>
+                                <div id="resultAvgFps" style="font-size: 1.5rem; font-weight: 900; color: var(--emerald);">0 FPS</div>
                             </div>
-
-                            <div class="grid grid-cols-2 gap-3 bg-slate-900/80 p-4 rounded-xl text-left border border-slate-800">
-                                <div>
-                                    <span class="text-[11px] uppercase text-slate-500 font-semibold">BM Score</span>
-                                    <p id="resultScore" class="text-2xl font-extrabold text-cyan-400 font-mono">0</p>
-                                </div>
-                                <div>
-                                    <span class="text-[11px] uppercase text-slate-500 font-semibold">Average FPS</span>
-                                    <p id="resultAvgFps" class="text-2xl font-extrabold text-emerald-400 font-mono">0</p>
-                                </div>
-                                <div>
-                                    <span class="text-[11px] uppercase text-slate-500 font-semibold">1% Low FPS</span>
-                                    <p id="resultMinFps" class="text-lg font-bold text-slate-200 font-mono">0</p>
-                                </div>
-                                <div>
-                                    <span class="text-[11px] uppercase text-slate-500 font-semibold">Tier Bracket</span>
-                                    <p id="resultTier" class="text-lg font-bold text-indigo-400">Analyzing</p>
-                                </div>
+                            <div>
+                                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">1% Low FPS</span>
+                                <div id="resultMinFps" style="font-size: 1rem; font-weight: 700; color: #fff;">0 FPS</div>
                             </div>
-
-                            <button id="closeModalBtn" class="w-full py-3 rounded-xl font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-colors shadow-lg shadow-cyan-500/25">
-                                Dismiss & Retest
-                            </button>
+                            <div>
+                                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Rank Tier</span>
+                                <div id="resultTier" style="font-size: 1rem; font-weight: 700; color: var(--indigo);">Evaluating</div>
+                            </div>
                         </div>
+
+                        <button id="closeModalBtn" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            Dismiss & Retest
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Hardware Specifications Detection Strip -->
-                <div class="bg-slate-950/70 border-t border-cyber-border px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-microchip text-slate-400 text-base"></i>
-                        <div>
-                            <span class="text-slate-500 block">Identified GPU:</span>
-                            <span id="hwRenderer" class="text-slate-200 font-semibold font-mono">Detecting...</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-code text-slate-400 text-base"></i>
-                        <div>
-                            <span class="text-slate-500 block">Graphics API:</span>
-                            <span id="hwApi" class="text-slate-200 font-semibold font-mono">WebGL Engine</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-display text-slate-400 text-base"></i>
-                        <div>
-                            <span class="text-slate-500 block">Viewport Resolution:</span>
-                            <span id="hwResolution" class="text-slate-200 font-semibold font-mono">0 x 0</span>
-                        </div>
-                    </div>
+            <!-- Hardware Detection Strip -->
+            <div class="hw-strip">
+                <div>
+                    <span class="hw-title">Identified GPU:</span>
+                    <span id="hwRenderer" class="hw-desc">Detecting...</span>
+                </div>
+                <div>
+                    <span class="hw-title">Graphics API:</span>
+                    <span id="hwApi" class="hw-desc">WebGL 2.0</span>
+                </div>
+                <div>
+                    <span class="hw-title">Render Resolution:</span>
+                    <span id="hwResolution" class="hw-desc">0 x 0 px</span>
                 </div>
             </div>
         </section>
 
-        <!-- Long-Form Content for Authority and SEO -->
-        <article class="max-w-5xl mx-auto px-4 py-12 space-y-16 text-slate-300 leading-relaxed">
-            
-            <!-- Section 1: Overview -->
-            <section id="overview" class="space-y-4">
-                <h2 class="text-3xl font-bold text-white tracking-tight border-l-4 border-cyan-500 pl-4">
-                    What is the Volume Shader BM Benchmark?
-                </h2>
+        <!-- SEO Article & Documentation -->
+        <article>
+            <section id="overview">
+                <h2>What is the Volume Shader BM Benchmark?</h2>
                 <p>
-                    The <strong>Volume Shader BM Benchmark</strong> is a specialized browser-based GPU evaluation tool designed to gauge the computational depth and arithmetic efficiency of modern graphics processors. Originally adapted from high-end demoscene rendering routines and raymarching algorithms, the benchmark produces an intricate, continuous 3D volumetric smoke and plasma cloud inside a WebGL viewport.
+                    The <strong>Volume Shader BM Benchmark</strong> is an established browser-based graphics test created to push modern GPU architectures to their computational limits. Unlike conventional polygon-based 3D benchmarks that evaluate triangle rasterization speeds and geometry pipelines, Volume Shader BM computes dynamic volumetric fluid, plasma, and absorption math directly per-pixel inside the fragment shader stage.
                 </p>
                 <p>
-                    Unlike conventional polygonal rasterization tests that evaluate triangle throughput and vertex transformation speeds (e.g., standard game meshes), <em>Volume Shader BM</em> relies almost entirely on the GPU's <strong>fragment processing pipeline</strong>. By stepping through 3D space along line-of-sight rays and accumulating color, density, and light transmittance at dozens or hundreds of discrete intervals per screen pixel, it creates an aggressive synthetic thermal and computational workload for desktop and mobile GPUs alike.
+                    By traversing 3D space with iterative raymarching, the shader samples volumetric noise at dozens or hundreds of discrete intervals per screen pixel. This makes it an exceptional tool for assessing GPU thermal throttling, hardware power delivery, and driver compilation efficiency across mobile, laptop, and desktop devices.
                 </p>
             </section>
 
-            <!-- Section 2: Technical Mechanics -->
-            <section class="space-y-4">
-                <h2 class="text-3xl font-bold text-white tracking-tight border-l-4 border-indigo-500 pl-4">
-                    How Does Volumetric Raymarching Stress Hardware?
-                </h2>
-                <p>
-                    Traditional 3D gaming pipelines render surfaces as hollow shells composed of triangles. Volumetric rendering, on the other hand, deals with objects that have no distinct solid surfaces—such as atmospheric clouds, nebulae, fluid dynamics, and medical CT scans. 
-                </p>
-                <div class="grid md:grid-cols-3 gap-6 my-6">
-                    <div class="bg-cyber-card border border-cyber-border rounded-xl p-5">
-                        <div class="text-cyan-400 text-xl font-bold mb-2">1. Ray Casting</div>
-                        <p class="text-xs text-slate-400">A vector is cast from the virtual camera position through each viewport pixel coordinate straight into 3D Cartesian coordinates.</p>
+            <section>
+                <h2>How Volumetric Raymarching Stresses Graphics Hardware</h2>
+                <div class="grid-3">
+                    <div class="card-feature">
+                        <h3>1. Ray Traversal</h3>
+                        <p>A ray vector is cast from the virtual viewport into dynamic 3D space per screen pixel.</p>
                     </div>
-                    <div class="bg-cyber-card border border-cyber-border rounded-xl p-5">
-                        <div class="text-indigo-400 text-xl font-bold mb-2">2. Procedural Noise</div>
-                        <p class="text-xs text-slate-400">At every sampling step, the shader computes multi-octave Perlin or Simplex noise algorithms to evaluate dynamic fluid density.</p>
+                    <div class="card-feature">
+                        <h3>2. Fractal Noise</h3>
+                        <p>Continuous mathematical noise functions evaluate volumetric density at each ray step.</p>
                     </div>
-                    <div class="bg-cyber-card border border-cyber-border rounded-xl p-5">
-                        <div class="text-pink-400 text-xl font-bold mb-2">3. Light Integral</div>
-                        <p class="text-xs text-slate-400">Beer-Lambert law formulations are computed continuously to simulate light extinction, dispersion, and secondary light scattering.</p>
+                    <div class="card-feature">
+                        <h3>3. Light Scattering</h3>
+                        <p>The Beer-Lambert equation integrates density and color to simulate realistic light transmission.</p>
                     </div>
                 </div>
                 <p>
-                    Running this calculation across 1920x1080 (or higher) pixels at 60 or 120 times per second means the GPU performs hundreds of millions of transcendental mathematical operations per second. This makes the Volume Shader BM Benchmark one of the most effective synthetic stress tests for diagnosing GPU thermal throttling, unstable overclocks, and memory bus congestion right inside Google Chrome, Mozilla Firefox, Safari, and Microsoft Edge.
+                    Because this process requires thousands of high-precision floating-point arithmetic operations (ALU operations) per frame, it acts as an intense synthetic workload without demanding hundreds of megabytes of texture downloads.
                 </p>
             </section>
 
-            <!-- Section 3: Performance Tier List -->
-            <section id="scoring" class="space-y-6">
-                <h2 class="text-3xl font-bold text-white tracking-tight border-l-4 border-emerald-500 pl-4">
-                    Volume Shader BM Score Tiers & Hardware Classification
-                </h2>
-                <p>
-                    Our benchmark algorithm normalizes the recorded Average FPS, 1% Low frame times, rendering resolution factor, and ray step density into a unified <strong>BM Benchmark Score</strong>. Use the classification guide below to identify where your system ranks:
-                </p>
-
-                <div class="overflow-x-auto border border-cyber-border rounded-xl">
-                    <table class="w-full text-left border-collapse text-sm">
+            <section id="scoring">
+                <h2>Score Tiers & Hardware Classification</h2>
+                <p>Use our normalized score matrix to gauge where your hardware stands:</p>
+                <div class="table-wrap">
+                    <table>
                         <thead>
-                            <tr class="bg-slate-900 border-b border-cyber-border text-slate-200">
-                                <th class="p-4">Tier</th>
-                                <th class="p-4">BM Score Range</th>
-                                <th class="p-4">Expected Avg FPS (Native)</th>
-                                <th class="p-4">Representative Hardware Classes</th>
+                            <tr>
+                                <th>Tier</th>
+                                <th>BM Score</th>
+                                <th>Target FPS (Native)</th>
+                                <th>Hardware Examples</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-cyber-border text-slate-300">
-                            <tr class="hover:bg-slate-900/50">
-                                <td class="p-4 font-bold text-amber-400">Godlike / Enthusiast</td>
-                                <td class="p-4 font-mono font-semibold">12,000+</td>
-                                <td class="p-4 font-mono text-cyan-300">144+ FPS</td>
-                                <td class="p-4">NVIDIA RTX 4080 / 4090, AMD Radeon RX 7900 XTX</td>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:700; color:#fbbf24;">Godlike / Enthusiast</td>
+                                <td>12,000+</td>
+                                <td>144+ FPS</td>
+                                <td>NVIDIA RTX 4080 / 4090, AMD RX 7900 XTX</td>
                             </tr>
-                            <tr class="hover:bg-slate-900/50">
-                                <td class="p-4 font-bold text-indigo-400">High-End Gaming</td>
-                                <td class="p-4 font-mono font-semibold">8,000 – 11,999</td>
-                                <td class="p-4 font-mono text-cyan-300">90 – 144 FPS</td>
-                                <td class="p-4">RTX 4070, RTX 3080, RX 6800 XT, Apple M3 Max</td>
+                            <tr>
+                                <td style="font-weight:700; color:#818cf8;">High-End Gaming</td>
+                                <td>8,000 – 11,999</td>
+                                <td>90 – 144 FPS</td>
+                                <td>RTX 4070, RTX 3080, Apple M3 Max</td>
                             </tr>
-                            <tr class="hover:bg-slate-900/50">
-                                <td class="p-4 font-bold text-cyan-400">Mainstream Desktop</td>
-                                <td class="p-4 font-mono font-semibold">4,500 – 7,999</td>
-                                <td class="p-4 font-mono text-cyan-300">55 – 90 FPS</td>
-                                <td class="p-4">RTX 3060, RTX 4060, RX 6600, Apple M2 / M3 Pro</td>
+                            <tr>
+                                <td style="font-weight:700; color:#38bdf8;">Mainstream Desktop</td>
+                                <td>4,500 – 7,999</td>
+                                <td>55 – 90 FPS</td>
+                                <td>RTX 4060, RX 6600, Apple M2 / M3 Pro</td>
                             </tr>
-                            <tr class="hover:bg-slate-900/50">
-                                <td class="p-4 font-bold text-emerald-400">Entry / Ultrabook</td>
-                                <td class="p-4 font-mono font-semibold">2,000 – 4,499</td>
-                                <td class="p-4 font-mono text-cyan-300">30 – 55 FPS</td>
-                                <td class="p-4">Intel Arc A380, Iris Xe G7, AMD Radeon 680M/780M</td>
+                            <tr>
+                                <td style="font-weight:700; color:#34d399;">Ultrabook / Entry</td>
+                                <td>2,000 – 4,499</td>
+                                <td>30 – 55 FPS</td>
+                                <td>Intel Iris Xe, Radeon 780M, Apple M1</td>
                             </tr>
-                            <tr class="hover:bg-slate-900/50">
-                                <td class="p-4 font-bold text-rose-400">Legacy / Mobile</td>
-                                <td class="p-4 font-mono font-semibold">&lt; 2,000</td>
-                                <td class="p-4 font-mono text-cyan-300">&lt; 30 FPS</td>
-                                <td class="p-4">Older Intel UHD Graphics, Mid-range smartphones</td>
+                            <tr>
+                                <td style="font-weight:700; color:#f87171;">Legacy / Low-Power</td>
+                                <td>&lt; 2,000</td>
+                                <td>&lt; 30 FPS</td>
+                                <td>Intel UHD, Budget Smartphone Processors</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Section 4: How to Maximize Performance -->
-            <section class="space-y-4">
-                <h2 class="text-3xl font-bold text-white tracking-tight border-l-4 border-amber-500 pl-4">
-                    How to Optimize Your Browser for Maximum GPU Performance
-                </h2>
-                <ul class="list-disc list-inside space-y-2 text-slate-300">
-                    <li><strong class="text-white">Enable Hardware Acceleration:</strong> Open browser settings, search for "Hardware Acceleration," and make sure "Use graphics acceleration when available" is toggled on.</li>
-                    <li><strong class="text-white">Configure High-Performance GPU Profile:</strong> On Windows laptops with dual graphics (Intel/AMD integrated + NVIDIA discrete), verify in Windows Graphics Settings that your browser is assigned to "High Performance".</li>
-                    <li><strong class="text-white">Unlock the FPS Cap (60Hz limit):</strong> If your benchmark will not exceed 60 FPS on high refresh displays, disable Vertical Sync in your graphics driver settings or run Chromium with <code>--disable-frame-rate-limit</code>.</li>
-                    <li><strong class="text-white">Monitor Thermal Throttling:</strong> If your FPS drops sharply after 10–15 seconds of testing, your GPU or CPU may be reducing clock speeds due to elevated operating temperatures.</li>
-                </ul>
-            </section>
-
-            <!-- Section 5: FAQ -->
-            <section id="faq" class="space-y-6">
-                <h2 class="text-3xl font-bold text-white tracking-tight border-l-4 border-purple-500 pl-4">
-                    Frequently Asked Questions (FAQ)
-                </h2>
-                <div class="space-y-4">
-                    <div class="bg-cyber-card border border-cyber-border rounded-xl p-5">
-                        <h3 class="text-lg font-bold text-white mb-2">Is the Volume Shader BM Benchmark safe for my GPU?</h3>
-                        <p class="text-sm text-slate-400">Yes. Although it pushes your graphics hardware to high fragment utilization, it operates within the standard sandboxed environment of your web browser via standard WebGL calls. It cannot modify voltages or bypass internal hardware safety mechanisms.</p>
-                    </div>
-                    <div class="bg-cyber-card border border-cyber-border rounded-xl p-5">
-                        <h3 class="text-lg font-bold text-white mb-2">Can I run this benchmark on an iPhone or Android device?</h3>
-                        <p class="text-sm text-slate-400">Yes! The benchmark engine is fully responsive and supports WebGL 1.0 and 2.0 implementations on mobile Safari, Chrome for Android, and mobile Firefox.</p>
-                    </div>
-                    <div class="bg-cyber-card border border-cyber-border rounded-xl p-5">
-                        <h3 class="text-lg font-bold text-white mb-2">Why does my discrete GPU name show as "ANGLE"?</h3>
-                        <p class="text-sm text-slate-400">Most Chromium-based browsers use Google's ANGLE (Almost Native Graphics Layer Engine) translation layer to convert WebGL API calls into native Direct3D 11/12 (on Windows) or Metal (on macOS). Your actual physical GPU model is typically listed alongside the ANGLE renderer string.</p>
-                    </div>
+            <section id="faq">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-item">
+                    <h3>Is this benchmark safe to execute on my device?</h3>
+                    <p>Yes. The test executes in your web browser's secure WebGL sandbox. It cannot modify voltages or bypass internal hardware thermal safeguards.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Why is my FPS locked at 60 on a 144Hz monitor?</h3>
+                    <p>Browsers often enforce V-Sync by default. You can unlock higher frame rates by disabling vertical sync in your graphics driver control panel or launching your browser with the <code>--disable-frame-rate-limit</code> flag.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What does the ANGLE renderer mean?</h3>
+                    <p>ANGLE (Almost Native Graphics Layer Engine) is a Google Chromium layer that translates WebGL calls to Direct3D (Windows) or Metal (macOS) for peak compatibility.</p>
                 </div>
             </section>
 
-            <!-- Section 6: About Us -->
-            <section id="about" class="space-y-4 pt-6 border-t border-cyber-border">
-                <h2 class="text-2xl font-bold text-white tracking-tight">About Us</h2>
-                <p class="text-sm text-slate-400">
-                    <strong>VolumeShaderBM Benchmark</strong> is an open initiative spearheaded by web graphics enthusiasts, shader developers, and computer hardware analysts. Our primary mission is to deliver zero-install, platform-agnostic GPU evaluation software that empowers consumers to verify display drivers, detect hardware throttling, and quantify real-time rendering performance right inside the browser.
-                </p>
-                <p class="text-sm text-slate-400">
-                    We adhere strictly to open WebGL and WebGPU development standards, avoiding bloatware or closed proprietary wrappers. All computations are conducted entirely on your local machine.
+            <section id="about">
+                <h2>About Us</h2>
+                <p>
+                    <strong>VolumeShaderBM Benchmark</strong> is an open-source web performance project designed to give developers, enthusiasts, and consumers instant access to zero-install GPU stress testing right in their browsers.
                 </p>
             </section>
 
-            <!-- Section 7: Privacy Policy -->
-            <section id="privacy" class="space-y-4 pt-6 border-t border-cyber-border text-xs text-slate-400 leading-normal">
-                <h2 class="text-2xl font-bold text-white tracking-tight">Privacy Policy</h2>
+            <section id="privacy">
+                <h2>Privacy Policy</h2>
                 <p>
-                    At <strong>volumeshaderbmbenchmark.github.io</strong>, we prioritize the protection of your personal privacy:
-                </p>
-                <ul class="list-disc list-inside space-y-1">
-                    <li><strong>No Personal Data Harvesting:</strong> We do not ask for, harvest, or store personal identifiers, names, email addresses, or IP logs.</li>
-                    <li><strong>Local GPU Processing:</strong> All shader code execution, FPS calculations, and score generation occur solely in client-side memory (your web browser). No frame buffers or render results are uploaded to external cloud servers.</li>
-                    <li><strong>Hardware String Query:</strong> Unmasked WebGL parameters (such as the unmasked renderer and vendor string) are queried locally solely to display your GPU model in the HUD.</li>
-                    <li><strong>Third-Party Libraries & Cookies:</strong> We utilize trusted, industry-standard Content Delivery Networks (CDNs) for CSS and icon distribution. We do not place invasive tracking or behavioral advertising cookies on your machine.</li>
-                </ul>
-                <p>
-                    Questions or suggestions regarding our open benchmark suite may be submitted via our official GitHub repository project discussions.
+                    We respect user privacy: we do not collect, store, or transmit personal data. All shader compilation, rendering, and performance score calculations are executed entirely within client-side memory on your local device.
                 </p>
             </section>
-
         </article>
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-cyber-border mt-20 bg-slate-950/80">
-        <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-            <div class="flex items-center space-x-2">
-                <span class="font-bold text-slate-300">VolumeShaderBM</span> &copy; <span id="currentYear"></span>. Free open-source WebGL utility.
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                VolumeShaderBM &copy; <span id="currentYear">2026</span>. Free open-source WebGL utility.
             </div>
-            <div class="flex space-x-6">
-                <a href="#benchmark" class="hover:text-slate-300">Run Tool</a>
-                <a href="#overview" class="hover:text-slate-300">Documentation</a>
-                <a href="#about" class="hover:text-slate-300">About</a>
-                <a href="#privacy" class="hover:text-slate-300">Privacy Policy</a>
+            <div class="footer-links">
+                <a href="#benchmark">Run Tool</a>
+                <a href="#overview">Documentation</a>
+                <a href="#about">About</a>
+                <a href="#privacy">Privacy</a>
             </div>
         </div>
     </footer>
 
-    <!-- WebGL Shaders & Interactive Benchmark Script -->
+    <!-- Optimized Shader & Benchmark Engine -->
     <script>
-        document.getElementById('currentYear').innerText = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Canvas and GL Context Setup
         const canvas = document.getElementById('glCanvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        const gl = canvas.getContext('webgl', { powerPreference: "high-performance" }) || canvas.getContext('experimental-webgl');
 
-        if (!gl) {
-            alert('Unable to initialize WebGL. Your browser or machine may not support hardware acceleration.');
-        }
-
-        // Hardware details extraction
-        function queryHardwareInfo() {
-            if (gl) {
-                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-                if (debugInfo) {
-                    const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-                    document.getElementById('hwRenderer').textContent = renderer || 'Generic WebGL GPU';
-                } else {
-                    document.getElementById('hwRenderer').textContent = gl.getParameter(gl.RENDERER) || 'Standard Graphics';
-                }
-                document.getElementById('hwApi').textContent = gl.getParameter(gl.VERSION);
+        // Detect Hardware
+        if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            if (debugInfo) {
+                const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                document.getElementById('hwRenderer').textContent = renderer || 'Standard WebGL Renderer';
+            } else {
+                document.getElementById('hwRenderer').textContent = gl.getParameter(gl.RENDERER) || 'Graphics Device';
             }
+            document.getElementById('hwApi').textContent = gl.getParameter(gl.VERSION);
         }
-        queryHardwareInfo();
 
-        // Vertex Shader
         const vsSource = `
             attribute vec2 a_position;
             void main() {
@@ -526,7 +495,6 @@
             }
         `;
 
-        // Fragment Shader with Volumetric Raymarching & Step Control
         const fsSource = `
             precision highp float;
             uniform vec2 u_resolution;
@@ -534,7 +502,6 @@
             uniform float u_steps;
             uniform vec2 u_mouse;
 
-            // 3D Noise Generation
             float hash(vec3 p) {
                 p = fract(p * 0.3183099 + 0.1);
                 p *= 17.0;
@@ -561,11 +528,9 @@
 
             void main() {
                 vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-                
                 vec3 ro = vec3(0.0, 0.0, -1.2);
                 vec3 rd = normalize(vec3(uv, 1.3));
 
-                // Mouse interaction rotation
                 float rotX = (u_mouse.y - 0.5) * 3.0;
                 float rotY = (u_mouse.x - 0.5) * 3.0;
                 mat3 rx = mat3(1.0, 0.0, 0.0, 0.0, cos(rotX), -sin(rotX), 0.0, sin(rotX), cos(rotX));
@@ -580,17 +545,12 @@
 
                 for (int i = 0; i < 512; i++) {
                     if (float(i) >= u_steps || sum.a >= 0.98 || t > maxT) break;
-
                     vec3 pos = ro + t * rd;
                     float den = map(pos);
-
                     if (den > 0.01) {
                         float density = clamp(den * 0.35, 0.0, 1.0);
-                        
-                        // Dynamic Volume Color Mapping
                         vec3 col = mix(vec3(0.08, 0.6, 0.9), vec3(0.9, 0.2, 0.4), clamp(den * 1.5, 0.0, 1.0));
                         col = mix(col, vec3(0.95, 0.85, 0.3), clamp(pos.y * 0.8 + 0.3, 0.0, 1.0));
-
                         vec4 colStep = vec4(col, density);
                         colStep.rgb *= colStep.a;
                         sum += colStep * (1.0 - sum.a);
@@ -598,136 +558,197 @@
                     t += stepSize;
                 }
 
-                // Cyberpunk Background Gradient
                 vec3 bg = mix(vec3(0.03, 0.04, 0.07), vec3(0.01, 0.02, 0.03), uv.y + 0.5);
                 gl_FragColor = vec4(mix(bg, sum.rgb, sum.a), 1.0);
             }
         `;
 
-        function createShader(gl, type, source) {
-            const shader = gl.createShader(type);
-            gl.shaderSource(shader, source);
-            gl.compileShader(shader);
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                console.error(gl.getShaderInfoLog(shader));
-                gl.deleteShader(shader);
-                return null;
-            }
-            return shader;
+        function compileShader(gl, type, src) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, src);
+            gl.compileShader(s);
+            return s;
         }
 
-        const vertexShader = createShader(gl, gl.VERTEX_SHADER, vsSource);
-        const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
-
         const program = gl.createProgram();
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
+        gl.attachShader(program, compileShader(gl, gl.VERTEX_SHADER, vsSource));
+        gl.attachShader(program, compileShader(gl, gl.FRAGMENT_SHADER, fsSource));
         gl.linkProgram(program);
 
-        const positionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        const posBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-            -1, -1,
-             1, -1,
-            -1,  1,
-            -1,  1,
-             1, -1,
-             1,  1
+            -1, -1,  1, -1, -1,  1,
+            -1,  1,  1, -1,  1,  1
         ]), gl.STATIC_DRAW);
 
-        const aPositionLocation = gl.getAttribLocation(program, "a_position");
-        const uResolutionLocation = gl.getUniformLocation(program, "u_resolution");
-        const uTimeLocation = gl.getUniformLocation(program, "u_time");
-        const uStepsLocation = gl.getUniformLocation(program, "u_steps");
-        const uMouseLocation = gl.getUniformLocation(program, "u_mouse");
+        const aPos = gl.getAttribLocation(program, "a_position");
+        const uRes = gl.getUniformLocation(program, "u_resolution");
+        const uTime = gl.getUniformLocation(program, "u_time");
+        const uSteps = gl.getUniformLocation(program, "u_steps");
+        const uMouse = gl.getUniformLocation(program, "u_mouse");
 
-        // Runtime states
-        let isPaused = false;
-        let animationFrameId = null;
-        let mouseX = 0.5, mouseY = 0.5;
+        // Control parameters
+        let isAnimating = true;
+        let isBenchmarking = false;
         let steps = 128;
         let scale = 1.0;
+        let mouseX = 0.5, mouseY = 0.5;
 
-        // Metrics & Benchmark States
-        let isBenchmarking = false;
-        let benchmarkStartTime = 0;
-        const benchmarkDuration = 20000; // 20 seconds test
-        let benchmarkFrames = [];
+        // Cached dimensions (Avoid forced reflow inside render loop)
+        let cachedWidth = 0;
+        let cachedHeight = 0;
 
-        let lastFrameTime = performance.now();
-        let frameCounter = 0;
-        let fpsTimer = performance.now();
-        let minFps = 999;
-        let maxFps = 0;
-
-        function resizeCanvas() {
-            const displayWidth = Math.floor(canvas.clientWidth * scale);
-            const displayHeight = Math.floor(canvas.clientHeight * scale);
-
-            if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-                canvas.width = displayWidth;
-                canvas.height = displayHeight;
+        function updateCanvasDimensions() {
+            const rect = canvas.getBoundingClientRect();
+            cachedWidth = Math.floor(rect.width * scale);
+            cachedHeight = Math.floor(rect.height * scale);
+            if (canvas.width !== cachedWidth || canvas.height !== cachedHeight) {
+                canvas.width = cachedWidth;
+                canvas.height = cachedHeight;
                 gl.viewport(0, 0, canvas.width, canvas.height);
                 document.getElementById('hwResolution').textContent = `${canvas.width} x ${canvas.height} px`;
             }
         }
 
-        // Render Loop
-        function render(now) {
-            if (!isPaused) {
-                resizeCanvas();
+        window.addEventListener('resize', updateCanvasDimensions);
 
+        // Benchmark variables
+        let benchmarkStart = 0;
+        const benchmarkDuration = 20000;
+        let benchmarkFrames = [];
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+        let lastFpsUpdate = performance.now();
+        let minFps = 999;
+        let maxFps = 0;
+
+        function drawFrame(timeSec) {
+            gl.useProgram(program);
+            gl.enableVertexAttribArray(aPos);
+            gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+            gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            gl.uniform1f(uTime, timeSec);
+            gl.uniform1f(uSteps, steps);
+            gl.uniform2f(uMouse, mouseX, mouseY);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        function loop(now) {
+            if (isAnimating) {
                 const delta = now - lastFrameTime;
                 lastFrameTime = now;
-                frameCounter++;
+                frameCount++;
 
-                if (now - fpsTimer >= 500) {
-                    const instantaneousFps = Math.round((frameCounter * 1000) / (now - fpsTimer));
-                    document.getElementById('currentFps').textContent = instantaneousFps;
+                if (now - lastFpsUpdate >= 400) {
+                    const fps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
+                    document.getElementById('currentFps').textContent = fps;
                     document.getElementById('frameTime').textContent = delta.toFixed(1) + ' ms';
 
-                    if (instantaneousFps > 0) {
-                        minFps = Math.min(minFps, instantaneousFps);
-                        maxFps = Math.max(maxFps, instantaneousFps);
+                    if (fps > 0) {
+                        minFps = Math.min(minFps, fps);
+                        maxFps = Math.max(maxFps, fps);
                         document.getElementById('minMaxFps').textContent = `${minFps} / ${maxFps}`;
                     }
 
                     if (isBenchmarking) {
-                        benchmarkFrames.push(instantaneousFps);
+                        benchmarkFrames.push(fps);
+                        const elapsed = now - benchmarkStart;
+                        const pct = Math.min(100, (elapsed / benchmarkDuration) * 100);
+                        document.getElementById('benchmarkProgressBar').style.width = pct + '%';
+
+                        if (elapsed >= benchmarkDuration) {
+                            completeBenchmark();
+                        }
                     }
 
-                    frameCounter = 0;
-                    fpsTimer = now;
+                    frameCount = 0;
+                    lastFpsUpdate = now;
                 }
 
-                if (isBenchmarking) {
-                    const elapsed = now - benchmarkStartTime;
-                    const progress = Math.min(100, (elapsed / benchmarkDuration) * 100);
-                    document.getElementById('benchmarkProgressBar').style.width = progress + '%';
-
-                    if (elapsed >= benchmarkDuration) {
-                        finishBenchmark();
-                    }
-                }
-
-                // Set Uniforms & Draw
-                gl.useProgram(program);
-                gl.enableVertexAttribArray(aPositionLocation);
-                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-                gl.vertexAttribPointer(aPositionLocation, 2, gl.FLOAT, false, 0, 0);
-
-                gl.uniform2f(uResolutionLocation, canvas.width, canvas.height);
-                gl.uniform1f(uTimeLocation, now * 0.001);
-                gl.uniform1f(uStepsLocation, steps);
-                gl.uniform2f(uMouseLocation, mouseX, mouseY);
-
-                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                drawFrame(now * 0.001);
             }
 
-            animationFrameId = requestAnimationFrame(render);
+            requestAnimationFrame(loop);
         }
 
-        // Mouse Drag Control for 3D Camera Look
+        function completeBenchmark() {
+            isBenchmarking = false;
+            document.getElementById('benchmarkProgressContainer').style.display = 'none';
+            const btn = document.getElementById('startBenchmarkBtn');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+
+            const valid = benchmarkFrames.filter(f => f > 0);
+            const avg = valid.length ? Math.round(valid.reduce((a, b) => a + b, 0) / valid.length) : 0;
+            const sorted = [...valid].sort((a, b) => a - b);
+            const low1Pct = sorted.length ? sorted[Math.floor(sorted.length * 0.1)] : 0;
+
+            const score = Math.round(avg * (steps / 64) * 85 * scale);
+
+            let tier = "Ultrabook / Entry";
+            if (score >= 12000) tier = "Godlike / Enthusiast";
+            else if (score >= 8000) tier = "High-End Gaming";
+            else if (score >= 4500) tier = "Mainstream Desktop";
+            else if (score < 2000) tier = "Legacy / Low-Power";
+
+            document.getElementById('resultScore').textContent = score.toLocaleString();
+            document.getElementById('resultAvgFps').textContent = avg + ' FPS';
+            document.getElementById('resultMinFps').textContent = (low1Pct || minFps) + ' FPS';
+            document.getElementById('resultTier').textContent = tier;
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        // Event Listeners
+        document.getElementById('qualityPreset').addEventListener('change', (e) => {
+            steps = parseFloat(e.target.value);
+            document.getElementById('stepCountDisp').textContent = steps;
+        });
+
+        document.getElementById('resolutionScale').addEventListener('change', (e) => {
+            scale = parseFloat(e.target.value);
+            updateCanvasDimensions();
+        });
+
+        const toggleBtn = document.getElementById('toggleAnimBtn');
+        const animText = document.getElementById('animBtnText');
+        toggleBtn.addEventListener('click', () => {
+            isAnimating = !isAnimating;
+            animText.textContent = isAnimating ? 'Pause' : 'Resume';
+        });
+
+        const startBtn = document.getElementById('startBenchmarkBtn');
+        startBtn.addEventListener('click', () => {
+            if (!isAnimating) {
+                isAnimating = true;
+                animText.textContent = 'Pause';
+            }
+            benchmarkFrames = [];
+            minFps = 999;
+            maxFps = 0;
+            isBenchmarking = true;
+            benchmarkStart = performance.now();
+            document.getElementById('benchmarkProgressContainer').style.display = 'block';
+            startBtn.disabled = true;
+            startBtn.style.opacity = '0.5';
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('resultModal').style.display = 'none';
+        });
+
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                canvas.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        // Mouse Drag Look
         let isDragging = false;
         canvas.addEventListener('mousedown', () => isDragging = true);
         window.addEventListener('mouseup', () => isDragging = false);
@@ -739,7 +760,6 @@
             }
         });
 
-        // Touch Control for Mobile
         canvas.addEventListener('touchmove', (e) => {
             if (e.touches.length > 0) {
                 const rect = canvas.getBoundingClientRect();
@@ -748,94 +768,10 @@
             }
         }, { passive: true });
 
-        // Quality and Resolution Controls
-        document.getElementById('qualityPreset').addEventListener('change', (e) => {
-            steps = parseFloat(e.target.value);
-            document.getElementById('stepCountDisp').textContent = steps;
-        });
-
-        document.getElementById('resolutionScale').addEventListener('change', (e) => {
-            scale = parseFloat(e.target.value);
-            resizeCanvas();
-        });
-
-        // Pause/Resume Button
-        const pauseBtn = document.getElementById('pauseShaderBtn');
-        pauseBtn.addEventListener('click', () => {
-            isPaused = !isPaused;
-            pauseBtn.innerHTML = isPaused 
-                ? '<i class="fa-solid fa-play"></i><span>Resume</span>' 
-                : '<i class="fa-solid fa-pause"></i><span>Pause</span>';
-        });
-
-        // Benchmark Flow
-        const startBtn = document.getElementById('startBenchmarkBtn');
-        const progressContainer = document.getElementById('benchmarkProgressContainer');
-        const resultModal = document.getElementById('resultModal');
-
-        startBtn.addEventListener('click', () => {
-            if (isPaused) {
-                isPaused = false;
-                pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i><span>Pause</span>';
-            }
-            benchmarkFrames = [];
-            minFps = 999;
-            maxFps = 0;
-            isBenchmarking = true;
-            benchmarkStartTime = performance.now();
-            progressContainer.classList.remove('hidden');
-            startBtn.disabled = true;
-            startBtn.classList.add('opacity-50');
-        });
-
-        function finishBenchmark() {
-            isBenchmarking = false;
-            progressContainer.classList.add('hidden');
-            startBtn.disabled = false;
-            startBtn.classList.remove('opacity-50');
-
-            // Calculate Metrics
-            const validFrames = benchmarkFrames.filter(f => f > 0);
-            const avgFps = validFrames.length > 0 
-                ? Math.round(validFrames.reduce((a, b) => a + b, 0) / validFrames.length) 
-                : 0;
-
-            const sorted = [...validFrames].sort((a, b) => a - b);
-            const onePercentLow = sorted.length > 0 ? sorted[Math.floor(sorted.length * 0.1)] : 0;
-
-            // Score formula: steps weight * avgFps * resolution scale factor
-            const finalScore = Math.round(avgFps * (steps / 64) * 85 * scale);
-
-            // Tier evaluation
-            let tier = "Entry / Ultrabook";
-            if (finalScore >= 12000) tier = "Godlike / Enthusiast";
-            else if (finalScore >= 8000) tier = "High-End Gaming";
-            else if (finalScore >= 4500) tier = "Mainstream Desktop";
-            else if (finalScore < 2000) tier = "Legacy / Low-Power";
-
-            document.getElementById('resultScore').textContent = finalScore.toLocaleString();
-            document.getElementById('resultAvgFps').textContent = avgFps + ' FPS';
-            document.getElementById('resultMinFps').textContent = (onePercentLow || minFps) + ' FPS';
-            document.getElementById('resultTier').textContent = tier;
-
-            resultModal.classList.remove('hidden');
-        }
-
-        document.getElementById('closeModalBtn').addEventListener('click', () => {
-            resultModal.classList.add('hidden');
-        });
-
-        // Fullscreen Toggle
-        document.getElementById('fullscreenBtn').addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                canvas.requestFullscreen().catch(err => alert(`Fullscreen error: ${err.message}`));
-            } else {
-                document.exitFullscreen();
-            }
-        });
-
-        // Initial trigger
-        requestAnimationFrame(render);
+        // First paint initialization
+        updateCanvasDimensions();
+        drawFrame(0.5);
+        requestAnimationFrame(loop);
     </script>
 </body>
 </html>
